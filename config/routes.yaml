@@ -1,3 +1,10 @@
+home:
+  path: /
+  controller: App\Controller\HomeController::index
+
+login:
+  path: login
+  controller: App\Controller\UserController::index
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
