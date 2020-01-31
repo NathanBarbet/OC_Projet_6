@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Tricks
  *
  * @ORM\Table(name="tricks", indexes={@ORM\Index(name="Groupe_ID", columns={"Groupe_ID"}), @ORM\Index(name="User_ID", columns={"User_ID"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TricksRepository")
  */
 class Tricks
 {
@@ -34,6 +34,13 @@ class Tricks
      * @ORM\Column(name="Description", type="text", length=65535, nullable=false)
      */
     private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Image_home", type="string", length=500, nullable=false)
+     */
+    private $imageHome;
 
     /**
      * @var \DateTime
@@ -94,6 +101,18 @@ class Tricks
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getImageHome(): ?string
+    {
+        return $this->imageHome;
+    }
+
+    public function setImageHome(string $imageHome): self
+    {
+        $this->imageHome = $imageHome;
 
         return $this;
     }

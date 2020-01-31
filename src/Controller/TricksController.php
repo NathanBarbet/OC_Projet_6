@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class HomeController extends AbstractController
+class TricksController extends AbstractController
 {
 
   private $twig;
@@ -17,11 +17,18 @@ class HomeController extends AbstractController
     $this->twig = $twig;
   }
 
-  public function index(): Response
+  public function show($id): Response
   {
       $repository = $this->getDoctrine()->getRepository(Tricks::class);
-      $tricks = $repository->findRecentTricks();
-      return new Response($this->twig->render('pages/home.html.twig', ['tricks' => $tricks]));
+      $trick = $repository->find($id);
+
+      return new Response($this->twig->render('pages/trick.html.twig', ['trick' => $trick]));
+  }
+
+  public function addtrick(): Response
+  {
+
+      return new Response($this->twig->render('pages/trick.html.twig'));
   }
 
 }

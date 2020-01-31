@@ -15,9 +15,9 @@ class UserController
     $this->twig = $twig;
   }
 
-  public function index(): Response
+  public function login(): Response
   {
       return new Response($this->twig->render('pages/login.html.twig'));
   }
-
+  
 }
