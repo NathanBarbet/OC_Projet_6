@@ -1,0 +1,18 @@
+home:
+  path: /
+  controller: App\Controller\HomeController::index
+
+login:
+  path: login
+  controller: App\Controller\UserController::login
+
+addtrick:
+  path: addtrick
+  controller: App\Controller\TricksController::addtrick
+
+trick.show:
+  path: /{name}-{id}
+  controller: App\Controller\TricksController::show
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
