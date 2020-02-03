@@ -30,6 +30,15 @@ class TricksRepository extends ServiceEntityRepository
           ->getResult();
     }
 
+    public function findSingleTrick($id)
+    {
+      return $this->createQueryBuilder('t')
+          ->where("t.id = $id")
+          ->getQuery()
+          ->getResult();
+    }
+
+
 
     // /**
     //  * @return Tricks[] Returns an array of Tricks objects

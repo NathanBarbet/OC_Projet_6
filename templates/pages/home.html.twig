@@ -20,7 +20,7 @@
       <div class="row mx-auto align-items-center col-xs-12 col-lg-12">
       <!-- Featured Project Row -->
       {% for tricks in tricks %}
-        <div class="card mb-5 w-100 col-md-2 col-xs-12 col-lg-2" style="margin: 1%">
+        <div class="card mb-5 w-100 col-md-2 col-xs-12 col-lg-2">
           <a href="{{ path('trick.show', {id: tricks.id, name: tricks.name})}}">
             <div class="card-body">
               <h5 class="card-title">

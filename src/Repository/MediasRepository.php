@@ -19,6 +19,15 @@ class MediasRepository extends ServiceEntityRepository
         parent::__construct($registry, Medias::class);
     }
 
+    public function findMediasTrick($id): array
+    {
+      return $this->createQueryBuilder('m')
+          ->where("m.tricks = $id")
+          ->orderBy('m.datePublish', 'DESC')
+          ->getQuery()
+          ->getResult();
+    }
+
     // /**
     //  * @return Medias[] Returns an array of Medias objects
     //  */

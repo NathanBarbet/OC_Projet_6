@@ -29,6 +29,13 @@ class Medias
     private $lien;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Date_publish", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+     */
+    private $datePublish = 'CURRENT_TIMESTAMP';
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Type", type="string", length=50, nullable=false)
@@ -58,6 +65,18 @@ class Medias
     public function setLien(string $lien): self
     {
         $this->lien = $lien;
+
+        return $this;
+    }
+
+    public function getDatePublish(): ?\DateTimeInterface
+    {
+        return $this->datePublish;
+    }
+
+    public function setDatePublish(\DateTimeInterface $datePublish): self
+    {
+        $this->datePublish = $datePublish;
 
         return $this;
     }
