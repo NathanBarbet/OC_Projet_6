@@ -9,18 +9,21 @@
         <meta name="author" content="">
 
         <!-- Bootstrap core CSS -->
-        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{ asset('vendor/owlcarousel/owl.carousel.css')}}" rel="stylesheet">
 
         <!-- Custom fonts for this template -->
-        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link href="{{ asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet">
+        <link href="{{ asset('https://fonts.googleapis.com/css?family=Varela+Round')}}" rel="stylesheet">
+        <link href="{{ asset('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}" rel="stylesheet">
 
         <!-- Custom styles for this template -->
-        <link href="css/grayscale.min.css" rel="stylesheet">
+        <link href="{{ asset('css/grayscale.min.css')}}" rel="stylesheet">
+
+
     </head>
     <body id="page-top">
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top col-lg-12 col-12" id="mainNav">
       <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="{{ path('home') }}">SnowTricks</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,14 +32,29 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
+          {% if not app.user %}
             <li class="nav-item">
               <a class="nav-link" href="{{ path('login') }}">Login</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('register') }}">Inscription</a>
+            </li>
+          {% endif %}
+          {% if app.user %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+            </li>
+          {% endif %}
           </ul>
         </div>
       </div>
     </nav>
-        {% block body %}{% endblock %}
+    {% for message in app.flashes('message') %}
+    <div class="alert alert-success col-lg-2 col-12">
+    {{ message }}
+    </div>
+  {% endfor %}
+    {% block body %}{% endblock %}
 
         <!-- Contact Section -->
         <section class="contact-section bg-black">
@@ -64,13 +82,19 @@
           </div>
         </footer>
         <!-- Bootstrap core JavaScript -->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ asset('vendor/jquery/jquery.min.js')}}"></script>
+        <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{ asset('vendor/bootstrap/js/bootstrap.js')}}"></script>
+        <script src="{{ asset('vendor/owlcarousel/owl.carousel.js')}}"></script>
+        <script src="{{ asset('vendor/owlcarousel/app.js')}}"></script>
+        <script src="{{ asset('vendor/loadmore/app.js')}}"></script>
+        <script src="{{ asset('vendor/fileupload/app.js')}}"></script>
 
         <!-- Plugin JavaScript -->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
         <!-- Custom scripts for this template -->
-        <script src="js/grayscale.min.js"></script>
+        <script src="{{ asset('js/grayscale.min.js')}}"></script>
+
     </body>
 </html>

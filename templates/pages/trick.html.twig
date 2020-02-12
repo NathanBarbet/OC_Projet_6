@@ -4,42 +4,57 @@
 
 {% block body %}
 <!-- Header -->
-<header class="masthead" style="background: linear-gradient(to bottom,rgba(22,22,22,.3) 0,rgba(22,22,22,.7) 75%,#161616 100%),url('img/img_masthead_trick/trick_{{ trick.id }}.jpg'); background-position: center; background-repeat: no-repeat; background-attachment: scroll; background-size: cover;">
-  <div class="container d-flex h-100 align-items-center">
-    <div class="mx-auto text-center">
-      <h1 class="mx-auto my-0 text-uppercase">{{ trick.name }}</h1>
-      <h2 class="text-white-50 mx-auto mt-2 mb-5"></h2>
+<header class="masthead col-lg-12 text-truncate" style="background: linear-gradient(to bottom,rgba(22,22,22,.3) 0,rgba(22,22,22,.7) 75%,#161616 100%),url('img/img_background/{{ trick.imgBackground }}'); background-position: center; background-repeat: no-repeat; background-attachment: scroll; background-size: cover;">
+  <div class="container col-lg-12 d-flex h-100 align-items-center">
+    <div class="mx-auto col-lg-12 text-center">
+      <h1 class="mx-auto my-0 col-lg-12 text-truncate text-uppercase">{{ trick.name }}</h1>
+      <h2 class="text-white-50 col-lg-12 mx-auto mt-2 mb-5"></h2>
     </div>
   </div>
 </header>
 
-<section id="projects" class="projects-section bg-light">
-    <div class="container">
 
-    <div class="card-group col-xs-12 col-lg-12">
-      <div class="row mx-auto align-items-center col-xs-12 col-lg-12">
-      <!-- Featured Project Row -->
-        {% for medias in medias %}
-          {% if medias.type == "image" %}
-            <div class="card mb-5 w-100 col-md-2 col-xs-12 col-lg-3">
-              <a href="{{ medias.lien }}">
-                <div class="card-body">
-                  <img class="card-img-bottom img-fluid img-responsive" style=" height: 150px;" src="{{ medias.lien }}" alt=""></img>
-                </div>
-              </a>
-            </div>
+
+
+<section id="projects" class="bg-light">
+{% if app.user and app.user.isactive == 1 and app.user.isvalide == 1 %}
+<div class="d-flex justify-content-end mb-5 mt-3 mr-3 ">
+    <a href="{{ path('trick.edit', {id: trick.id, name: trick.name})}}#form"
+      <button class="btn btn-primary"><i class="far fa-edit"></i>Editer</button>
+    </a>
+</div>
+{% endif %}
+
+
+
+    <div class="container">
+    <div class="p-2">
+    {% if medias != null %}
+    <div class="main-content col-xs-12 col-lg-12">
+    <div class="owl-carousel owl-theme mx-auto align-items-center col-xs-12 col-lg-12">
+      {% for medias in medias %}
+        {% if medias.type == "image" %}
+          <a href="img/img_media/{{ medias.filename }}">
         {% elseif medias.type == "youtube" %}
-          <div class="card mb-5 w-100 col-md-2 col-xs-12 col-lg-3">
-            <a href="{{ medias.lien }}">
-              <div class="card-body">
-                <iframe width="200" height="143" src="{{ medias.lien }}" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              </div>
-            </a>
-          </div>
+          <a href="https://www.youtube.com/embed/{{ medias.filename }}">
         {% endif %}
+          <div class="item mb-5 w-100">
+            {% if medias.type == "image" %}
+              <img class="card-img-bottom img-fluid img-responsive" style=" height: 150px;" src="img/img_media/{{ medias.filename }}" alt="">
+            {% elseif medias.type == "youtube" %}
+              <iframe class="card-img-bottom" width="277" height="150" src="https://www.youtube.com/embed/{{ medias.filename }}" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {% endif %}
+          </div>
+        </a>
       {% endfor %}
-      </div>
     </div>
+    <div class="owl-theme">
+        <div class="owl-controls">
+            <div class="custom-nav owl-nav"></div>
+        </div>
+    </div>
+    </div>
+    {% endif %}
 
       <!-- Featured Project Row -->
       <div class="row align-items-center no-gutters mb-4 mb-lg-5">
@@ -50,9 +65,11 @@
           </div>
         </div>
       </div>
+    </div>
+    </div>
   </section>
 
-<section id="projects" class="projects-section bg-light">
+<section id="" class="projects-section bg-light">
   <div class="container">
     <div class="row col-md-12">
       <div class="d-flex flex-wrap justify-content-around align-content-sm-center col-md-12">
