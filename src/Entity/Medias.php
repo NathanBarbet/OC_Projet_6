@@ -2,7 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Medias
@@ -24,9 +28,14 @@ class Medias
     /**
      * @var string
      *
-     * @ORM\Column(name="Lien", type="string", length=50, nullable=false)
+     * @ORM\column(type="string", length=255, nullable=false)
      */
-    private $lien;
+    private $filename;
+
+    /**
+     * @ORM\column(name="Image_medias", type="string", length=255, nullable=false)
+     */
+    private $imageMedias;
 
     /**
      * @var \DateTime
@@ -52,21 +61,44 @@ class Medias
      */
     private $tricks;
 
+    public function __construct()
+    {
+       $this->datePublish = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return $this->medias;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getLien(): ?string
+    public function getFilename(): ?string
     {
-        return $this->lien;
+        return $this->filename;
     }
 
-    public function setLien(string $lien): self
+    public function setFilename(?string $filename): self
     {
-        $this->lien = $lien;
+        $this->filename = $filename;
+        if ($this->imageMedias instanceof UploadedFile) {
+            $this->datePublish = new \DateTime('now');
+        }
 
         return $this;
+    }
+
+    public function getImageMedias(): ?File
+    {
+        return $this->imageMedias;
+    }
+
+    public function setImageMedias(?File $imageMedias = null): void
+    {
+        $this->imageMedias = $imageMedias;
     }
 
     public function getDatePublish(): ?\DateTimeInterface
@@ -96,6 +128,7 @@ class Medias
     public function getTricks(): ?Tricks
     {
         return $this->tricks;
+        $tricks = $trick->getId();
     }
 
     public function setTricks(?Tricks $tricks): self

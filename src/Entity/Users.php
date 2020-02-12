@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Users
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="App\Repository\UsersRepository")
  */
-class Users
+class Users implements UserInterface,\Serializable
 {
     /**
      * @var int
@@ -43,6 +44,13 @@ class Users
     private $email;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="Date_register", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+     */
+    private $dateRegister = 'CURRENT_TIMESTAMP';
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Avatar", type="string", length=50, nullable=false)
@@ -62,6 +70,29 @@ class Users
      * @ORM\Column(name="Admin", type="boolean", nullable=false)
      */
     private $admin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Token", type="string", length=40, nullable=false)
+     */
+    private $token;
+
+    /**
+     * @ORM\Column(name="isActive", type="boolean", nullable=false)
+     */
+    private $isActive;
+
+    /**
+     * @ORM\Column(name="isValide", type="boolean", nullable=false)
+     */
+    private $isValide;
+
+    public function __construct()
+    {
+        $this->dateRegister = new \DateTime();
+        $this->isActive = true;
+    }
 
     public function getId(): ?int
     {
@@ -94,12 +125,24 @@ class Users
 
     public function getEmail(): ?string
     {
-        return $this->email;
+        return $this->username;
     }
 
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getDateRegister(): ?\DateTimeInterface
+    {
+        return $this->dateRegister;
+    }
+
+    public function setDateRegister(\DateTimeInterface $dateRegister): self
+    {
+        $this->dateRegister = $dateRegister;
 
         return $this;
     }
@@ -140,5 +183,94 @@ class Users
         return $this;
     }
 
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
 
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getIsValide(): ?bool
+    {
+        return $this->isValide;
+    }
+
+    public function setIsValide(bool $isValide): self
+    {
+        $this->isValide = $isValide;
+
+        return $this;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function getUsername()
+    {
+      return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize ([
+           $this->id,
+           $this->name,
+           $this->firstname,
+           $this->email,
+           $this->admin,
+           $this->isActive,
+           $this->isValide,
+           $this->password,
+       ]);
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list(
+           $this->id,
+           $this->name,
+           $this->firstname,
+           $this->email,
+           $this->admin,
+           $this->isActive,
+           $this->isValide,
+           $this->password,
+
+       ) = unserialize($serialized, array('allowed_classes' => false));
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

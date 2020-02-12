@@ -2,13 +2,71 @@ home:
   path: /
   controller: App\Controller\HomeController::index
 
+tricksajax:
+  path: /tricks/ajax
+  controller: App\Controller\HomeController::tricksajax
+
 login:
   path: login
   controller: App\Controller\UserController::login
 
+logout:
+  path: logout
+
+register:
+  path: register
+  controller: App\Controller\UserController::adduser
+
+registervalide:
+  path: registervalide
+  controller: App\Controller\UserController::adduservalide
+
+resetpassword:
+  path: resetpassword
+  controller: App\Controller\UserController::resetpassword
+
+resetpasswordvalide:
+  path: resetpasswordvalide
+  controller: App\Controller\UserController::resetpasswordvalide
+
+newpassword:
+  path: newpassword-{token}-{email}
+  controller: App\Controller\UserController::newpassword
+
+setnewpassword:
+  path: setnewpassword-{token}-{email}
+  controller: App\Controller\UserController::setnewpassword
+
+activeemail:
+  path: activeemail-{token}-{name}
+  controller: App\Controller\UserController::activeemail
+
 addtrick:
   path: addtrick
   controller: App\Controller\TricksController::addtrick
+
+trick.edit:
+  path: /edit-{name}-{id}
+  controller: App\Controller\TricksController::edit
+  methods:    GET|POST
+
+trick.addmediasimage:
+  path: /addmedias-image-{id}
+  controller: App\Controller\MediasController::addmediasimage
+  methods:    GET|POST
+
+trick.addmediasvideo:
+  path: /addmedias-video-{id}
+  controller: App\Controller\MediasController::addmediasvideo
+  methods:    GET|POST
+
+trick.delete:
+  path: /delete-trick/{id}
+  controller: App\Controller\TricksController::delete
+
+trick.deletemedias:
+  path: /delete-medias/{name}-{trickid}-{id}
+  controller: App\Controller\MediasController::delete
 
 trick.show:
   path: /{name}-{id}

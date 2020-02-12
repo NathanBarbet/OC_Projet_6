@@ -7,6 +7,7 @@ use App\Entity\Medias;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query;
 
 /**
  * @method Tricks|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,11 +22,12 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
-    public function findRecentTricks(): array
+    public function findRecentTricks($page)
     {
       return $this->createQueryBuilder('t')
           ->orderBy('t.dateModify', 'DESC')
-          ->setMaxResults(18)
+          ->setMaxResults(6)
+          ->setFirstResult($page*6)
           ->getQuery()
           ->getResult();
     }

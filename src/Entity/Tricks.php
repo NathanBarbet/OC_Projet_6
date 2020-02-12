@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Tricks
@@ -36,11 +40,28 @@ class Tricks
     private $description;
 
     /**
+    * @var string
+    * @ORM\column(type="string", length=255, nullable=false)
+    */
+    private $filename;
+
+    /**
+    * @var string|null
+    * @ORM\column(type="string", length=255, nullable=false)
+    */
+    private $imgBackground;
+
+    /**
      * @var string
-     *
-     * @ORM\Column(name="Image_home", type="string", length=500, nullable=false)
+     * @ORM\column(name="Image_home",type="string", length=255, nullable=false)
      */
     private $imageHome;
+
+    /**
+     * @var string
+     * @ORM\column(name="Image_background",type="string", length=255, nullable=false)
+     */
+    private $imageBackground;
 
     /**
      * @var \DateTime
@@ -50,7 +71,7 @@ class Tricks
     private $datePublish = 'CURRENT_TIMESTAMP';
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeInterface|null
      *
      * @ORM\Column(name="Date_modify", type="datetime", nullable=true)
      */
@@ -76,6 +97,21 @@ class Tricks
      */
     private $user;
 
+    /**
+     * @var \Users
+     *
+     * @ORM\ManyToOne(targetEntity="Users")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="User_ID_Modify", referencedColumnName="ID")
+     * })
+     */
+    private $userModify;
+
+    public function __construct()
+   {
+       $this->datePublish = new \DateTime();
+   }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +125,9 @@ class Tricks
     public function setName(string $name): self
     {
         $this->name = $name;
+        if ($this->name) {
+            $this->dateModify = new \DateTime('now');
+        }
 
         return $this;
     }
@@ -101,20 +140,68 @@ class Tricks
     public function setDescription(string $description): self
     {
         $this->description = $description;
+        if ($this->description) {
+            $this->dateModify = new \DateTime('now');
+        }
 
         return $this;
     }
 
-    public function getImageHome(): ?string
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(?string $filename): self
+    {
+        $this->filename = $filename;
+        if ($this->filename) {
+            $this->dateModify = new \DateTime('now');
+        }
+
+        return $this;
+    }
+
+    public function getImgBackground(): ?string
+    {
+        return $this->imgBackground;
+    }
+
+    public function setImgBackground(?string $imgBackground): self
+    {
+        $this->imgBackground = $imgBackground;
+        if ($this->imgBackground) {
+            $this->dateModify = new \DateTime('now');
+        }
+
+        return $this;
+    }
+
+
+    public function getImageHome(): ?File
     {
         return $this->imageHome;
     }
 
-    public function setImageHome(string $imageHome): self
+    public function setImageHome(?File $imageHome = null): void
     {
         $this->imageHome = $imageHome;
+        if ($this->imageHome instanceof UploadedFile) {
+            $this->dateModify = new \DateTime('now');
+        }
+    }
 
-        return $this;
+    public function getImageBackground(): ?File
+    {
+        return $this->imageBackground;
+    }
+
+    public function setImageBackground(?File $imageBackground = null): void
+    {
+        $this->imageBackground = $imageBackground;
+        if ($this->imageBackground instanceof UploadedFile) {
+            $this->dateModify = new \DateTime('now');
+        }
     }
 
     public function getDatePublish(): ?\DateTimeInterface
@@ -149,6 +236,9 @@ class Tricks
     public function setGroupe(?Groupe $groupe): self
     {
         $this->groupe = $groupe;
+        if ($this->groupe) {
+            $this->dateModify = new \DateTime('now');
+        }
 
         return $this;
     }
@@ -165,5 +255,19 @@ class Tricks
         return $this;
     }
 
+    public function getUserModify(): ?Users
+    {
+        return $this->userModify;
+    }
+
+    public function setUserModify(?Users $userModify): self
+    {
+        $this->userModify = $userModify;
+        if ($this->userModify) {
+            $this->dateModify = new \DateTime('now');
+        }
+
+        return $this;
+    }
 
 }

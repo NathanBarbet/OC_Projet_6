@@ -3,14 +3,28 @@
 {% block title %}Ajouter un trick{% endblock %}
 
 {% block body %}
+{% if app.user and app.user.isactive == 1 and app.user.isvalide == 1 %}
 <!-- Header -->
 <header class="masthead">
   <div class="container d-flex h-100 align-items-center">
     <div class="mx-auto text-center">
       <h1 class="mx-auto my-0 text-uppercase">Ajouter un trick</h1>
-
     </div>
   </div>
 </header>
 
+<section id="form">
+  <div class="m-5 d-flex justify-content-center" style="background-color: white;">
+    <div class="col-6 text-center">
+      {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <p>Champs obligatoire *</p>
+        <button class="btn btn-primary">Valider</button>
+      {{ form_end(form) }}
+    </div>
+  </div>
+</section>
+{% else %}
+  <div class="alert alert-danger">Vous devez être connecter et valider par l'administrateur</div>
+{% endif %}
 {% endblock %}
