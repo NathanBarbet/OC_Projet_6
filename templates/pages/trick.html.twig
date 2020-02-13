@@ -61,7 +61,7 @@
         <div class="col-xl-4 col-lg-5">
           <div class="featured-text text-center text-lg-left">
             <h4>Description</h4>
-            <p class="text-black-50 mb-0">{{ trick.description }}</p>
+            <p class="text-black-50 mb-0">{{ trick.description|raw }}</p>
           </div>
         </div>
       </div>
@@ -69,16 +69,16 @@
     </div>
   </section>
 
-<section id="" class="projects-section bg-light">
+<section id="" class="projects-section bg-light" style="padding: 5rem 0;">
   <div class="container">
     <div class="row col-md-12">
       <div class="d-flex flex-wrap justify-content-around align-content-sm-center col-md-12">
         <div>
-          <p><i class="far fa-share-square"></i> {{ trick.datePublish|date("d/m/Y à H:i:s") }} </p>
+          <p><i class="far fa-share-square"></i> {{ trick.datePublish|date("d/m/Y à H:i:s") }} par {{ trick.user.firstname }} {{ trick.user.name }} </p>
         </div>
         {% if trick.dateModify != null %}
         <div>
-          <p><i class="far fa-edit"></i> Modifier le ( {{ trick.dateModify|date("d/m/Y à H:i:s") }} ) </p>
+          <p><i class="far fa-edit"></i> Modifier le ( {{ trick.dateModify|date("d/m/Y à H:i:s") }} par {{ trick.userModify.firstname }} {{ trick.userModify.name }}) </p>
         </div>
         {% endif %}
         <div>
@@ -86,7 +86,55 @@
       </div>
     </div>
   </div>
+  </div>
 </section>
+
+
+<div class="container">
+    <div class="row col-lg-12">
+        <div class="panel panel-default widget col-lg-12">
+            <div class="panel-heading col-lg-12 border mb-3">
+                <span class=""></span>
+                {% if app.user and app.user.isactive == 1 %}
+                <h3 class="panel-title">
+                    Ajouter un commentaire</h3>
+                    <form action="{{ path('addcomment', {name: trick.name, id: trick.id}) }}" method="post">
+
+
+                    <div class="form-group">
+                      <label for="content"></label>
+                      <input type="text" name="content" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-secondary mb-3">Envoyer</button>
+                    </form>
+                  {% elseif app.user and app.user.isactive == 0 %}
+                      <div class="panel-heading col-lg-12">
+                          <span class="glyphicon glyphicon-comment"></span>
+                          <h3 class="comment-text">
+                              Vous devez valider votre compte pour laisser un commentaire</h3>
+                      </div>
+                  {% else %}
+                    <div class="panel-heading col-lg-12">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        <h3 class="comment-text">
+                            Vous devez être connecter pour laisser un commentaire</h3>
+                    </div>
+                  {% endif %}
+            </div>
+            <div class="panel-heading col-lg-12">
+                <span class=""></span>
+                <h3 class="panel-title">
+                    Commentaires</h3>
+            </div>
+            <div id="commentsResult">
+
+            </div>
+
+                <button id="btnLoadMoreComments" class="btn btn-secondary mt-3 mb-3" data-page="0" data-tricksid="{{ trick.id }}">Voir plus</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

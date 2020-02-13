@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Profil{% endblock %}
+
+{% block body %}
+{% if app.user %}
+<!-- Header -->
+<header class="masthead col-lg-12 text-truncate">  <div class="container d-flex h-100 align-items-center">
+  <div class="container d-flex h-100 align-items-center">
+    <div class="mx-auto text-center">
+      <h1 class="mx-auto my-0 text-uppercase">Edit Profil</h1>
+    </div>
+  </div>
+</header>
+
+<section id="form">
+<div class="container">
+  <div class="p-2">
+
+    <div class="m-5 d-flex justify-content-center" style="background-color: white;">
+      <div class="col-6 text-center">
+        {{ form_start(form) }}
+          {{ form_row(form.name) }}
+          {{ form_row(form.firstname) }}
+          {{ form_row(form.avatar) }}
+          <div class="card w-100 col-md-6 col-xs-12 col-lg-6">
+              <div class="card-body">
+              <p>Image actuel</p>
+              {% if app.user.filename == null %}
+                <img src="img/avatar/default.png" class="card-img-bottom img-fluid img-responsive" style=" height: 150px;">
+              {% else %}
+                <img src="img/avatar/{{ app.user.filename }}" class="card-img-bottom img-fluid img-responsive" style=" height: 150px;">
+              {% endif %}
+              </div>
+          </div>
+          </br>
+          <button class="btn btn-info">Valider</button>
+        {{ form_end(form) }}
+        </br>
+        <a class="btn btn-secondary" href="{{ path('profil')}}#form">
+            Retour
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+{% else %}
+  <div class="alert alert-danger">Vous devez être connecter et valider par l'administrateur</div>
+{% endif %}
+{% endblock %}

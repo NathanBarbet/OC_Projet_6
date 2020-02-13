@@ -41,6 +41,22 @@ activeemail:
   path: activeemail-{token}-{name}
   controller: App\Controller\UserController::activeemail
 
+profil:
+  path: profil
+  controller: App\Controller\UserController::profil
+
+editprofil:
+  path: editprofil
+  controller: App\Controller\UserController::editprofil
+
+editprofilpassword:
+  path: editprofilpassword
+  controller: App\Controller\UserController::editprofilpassword
+
+editprofilpasswordvalide:
+  path: editprofilpasswordvalide
+  controller: App\Controller\UserController::editprofilpasswordvalide
+
 addtrick:
   path: addtrick
   controller: App\Controller\TricksController::addtrick
@@ -71,6 +87,18 @@ trick.deletemedias:
 trick.show:
   path: /{name}-{id}
   controller: App\Controller\TricksController::show
+
+addcomment:
+  path: /addcomment/{name}-{id}
+  controller: App\Controller\CommentsController::addcomment
+
+commentsajax:
+  path: /comments/ajax
+  controller: App\Controller\CommentsController::commentsajax
+
+comment.delete:
+  path: /delete-comment/{trickname}-{trickid}-{id}
+  controller: App\Controller\CommentsController::delete
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index

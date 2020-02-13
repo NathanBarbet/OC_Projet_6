@@ -53,7 +53,14 @@ class Users implements UserInterface,\Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="Avatar", type="string", length=50, nullable=false)
+     * @ORM\Column(name="filename", type="string", length=255, nullable=false)
+     */
+    private $filename;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Avatar", type="string", length=50, nullable=true)
      */
     private $avatar;
 
@@ -74,7 +81,7 @@ class Users implements UserInterface,\Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="Token", type="string", length=40, nullable=false)
+     * @ORM\Column(name="Token", type="string", length=40, nullable=true)
      */
     private $token;
 
@@ -147,6 +154,18 @@ class Users implements UserInterface,\Serializable
         return $this;
     }
 
+    public function getFileName(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(string $filename): self
+    {
+        $this->filename = $filename;
+
+        return $this;
+    }
+
     public function getAvatar(): ?string
     {
         return $this->avatar;
@@ -188,7 +207,7 @@ class Users implements UserInterface,\Serializable
         return $this->token;
     }
 
-    public function setToken(string $token): self
+    public function setToken(?string $token): self
     {
         $this->token = $token;
 
@@ -246,6 +265,7 @@ class Users implements UserInterface,\Serializable
            $this->name,
            $this->firstname,
            $this->email,
+           $this->dateRegister,
            $this->admin,
            $this->isActive,
            $this->isValide,
@@ -261,6 +281,7 @@ class Users implements UserInterface,\Serializable
            $this->name,
            $this->firstname,
            $this->email,
+           $this->dateRegister,
            $this->admin,
            $this->isActive,
            $this->isValide,

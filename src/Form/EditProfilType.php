@@ -2,48 +2,53 @@
 
 namespace App\Form;
 
-use App\Entity\Medias;
-use App\Entity\Tricks;
+use App\Entity\Users;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
 
-class MediasImageType extends AbstractType
+
+class EditProfilType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('imageMedias', Filetype::class, [
-              'label' => "Image (jpg) *",
-              'required' => true,
+            ->add('name', null, [
+              'required' => false,
+              'label' => "Nom",
+            ])
+
+            ->add('firstname', null, [
+              'required' => false,
+              'label' => "Prénom",
+            ])
+
+            ->add('avatar', Filetype::class, [
+              'label' => "Avatar (jpg)",
+              'required' => false,
               'mapped' => false,
               'attr' => ['placeholder' => 'Choisir fichier'],
               'constraints' => [
                     new File([
-                        'maxSize' => '5M',
+                        'maxSize' => '2M',
                         'mimeTypes' => [
                             'image/jpeg'
                         ],
-                        'mimeTypesMessage' => 'Seul les fichier JPG et de moins de 5mo sont accepter',
+                        'mimeTypesMessage' => 'Seul les fichier JPG et de moins de 2mo sont accepter',
                     ])
             ]
-          ])
-            ->add('type', HiddenType::class)
-            ->add('tricks', HiddenType::class)
-
-        ;
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Medias::class,
+            'data_class' => Users::class,
         ]);
     }
 }

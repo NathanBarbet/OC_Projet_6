@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TricksController extends AbstractController
 {
@@ -36,10 +37,14 @@ class TricksController extends AbstractController
 
       $repository = $this->getDoctrine()->getRepository(Medias::class);
       $medias = $repository->findMediasTrick($id);
-      return new Response($this->twig->render('pages/trick.html.twig', ['trick' => $trick, 'medias' => $medias]));
+
+      return new Response($this->twig->render('pages/trick.html.twig', [
+        'trick' => $trick,
+        'medias' => $medias
+      ]));
   }
 
-  public function addtrick(Request $request): Response
+  public function addtrick(Request $request, UserInterface $user): Response
   {
       $trick = new Tricks();
       $form = $this->createForm(TrickType::class, $trick);
@@ -47,6 +52,8 @@ class TricksController extends AbstractController
 
 
       if ($form->isSubmitted() && $form->isValid()) {
+
+        $trick->setUser($user);
         // upload image home
         $imageHome = $form->get('imageHome')->getData();
 
@@ -105,12 +112,14 @@ class TricksController extends AbstractController
       ]));
   }
 
-  public function edit(Tricks $trick, Request $request): Response
+  public function edit(Tricks $trick, Request $request, UserInterface $user): Response
   {
       $form = $this->createForm(EditTrickType::class, $trick);
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
+
+        $trick->setUserModify($user);
         // upload image home
         $imageHome = $form->get('imageHome')->getData();
 
