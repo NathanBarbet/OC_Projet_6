@@ -1,0 +1,49 @@
+<div class="panel-body">
+    <ul class="list-group">
+    {% if comments is not empty %}
+      {% for comments in comments %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-2 col-md-1">
+                {% if comments.user.filename == null %}
+                  <img src="img/avatar/default.png" class="img-responsive" style="width: 80px; height: 80px;"></div>
+                {% else %}
+                  <img src="img/avatar/{{ comments.user.filename }}" class="img-responsive" style="width: 80px; height: 80px;"></div>
+                {% endif %}
+                <div class="col-xs-10 col-md-11">
+                    <div class="">
+                        <div class="mic-info">
+                            De: {{ comments.user.firstname }} {{ comments.user.name }} le {{ comments.datepublish|date('d-m-Y à H:i:s') }}
+                        </div>
+                        {% if app.user and app.user.admin == 1 %}
+                        <div class="p-2">
+                          <a href="" data-toggle="modal" data-target="#delete{{ comments.id }}"><p><i class="far fa-trash-alt"></i></a>
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="comment-text">
+                        {{ comments.content }}
+                    </div>
+                </div>
+            </div>
+        </li>
+        <!-- Modal delete -->
+        <div class="modal fade" id="delete{{ comments.id }}" tabindex="-1" role="dialog" aria-labelledby="Modaldelete" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                Etes vous sur de vouloir supprimer ce commentaire ?
+              </div>
+              <div class="modal-footer">
+                <a href="{{ path('comment.delete', { trickname: comments.tricks.name, trickid: comments.tricks.id, id: comments.id })}}"<button type="button" class="btn btn-danger" >Supprimer</button></a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+          <h5 class="panel-title">
+              Pas encore de commentaire</h5>
+      {% endif %}
+    </ul>

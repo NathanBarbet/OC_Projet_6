@@ -10,7 +10,7 @@ parameters:
 
         img_background: '%kernel.project_dir%/public/img/img_background'
 
-        front_nb_articles_par_page: '20'
+        avatar: '%kernel.project_dir%/public/img/avatar'
 
 services:
     # default configuration for services in *this* file

@@ -19,6 +19,17 @@ class CommentsRepository extends ServiceEntityRepository
         parent::__construct($registry, Comments::class);
     }
 
+    public function findRecentComments($id, $page)
+    {
+      return $this->createQueryBuilder('c')
+          ->where("c.tricks = $id")
+          ->orderBy('c.datePublish', 'DESC')
+          ->setMaxResults(5)
+          ->setFirstResult($page*5)
+          ->getQuery()
+          ->getResult();
+    }
+
     // /**
     //  * @return Comments[] Returns an array of Comments objects
     //  */

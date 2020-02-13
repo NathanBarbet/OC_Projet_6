@@ -19,6 +19,8 @@
 
         <!-- Custom styles for this template -->
         <link href="{{ asset('css/grayscale.min.css')}}" rel="stylesheet">
+        <link href="{{ asset('vendor/comments/comments.css')}}" rel="stylesheet">
+        <script src="{{ asset('https://cdn.tiny.cloud/1/6yj2fi6nx4ebdesr1xbpo1plo79myuh4tg6wz4wyb5mjyvrx/tinymce/5/tinymce.min.js')}}" referrerpolicy="origin"></script>
 
 
     </head>
@@ -43,6 +45,9 @@
           {% if app.user %}
             <li class="nav-item">
               <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('profil') }}">Profil</a>
             </li>
           {% endif %}
           </ul>
@@ -88,7 +93,9 @@
         <script src="{{ asset('vendor/owlcarousel/owl.carousel.js')}}"></script>
         <script src="{{ asset('vendor/owlcarousel/app.js')}}"></script>
         <script src="{{ asset('vendor/loadmore/app.js')}}"></script>
+        <script src="{{ asset('vendor/loadmorecomments/app.js')}}"></script>
         <script src="{{ asset('vendor/fileupload/app.js')}}"></script>
+        <script src="{{ asset('vendor/tinymce/app.js')}}"></script>
 
         <!-- Plugin JavaScript -->
         <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>

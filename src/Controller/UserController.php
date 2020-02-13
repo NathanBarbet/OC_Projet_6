@@ -14,6 +14,7 @@ use Twig\Environment;
 use App\Entity\Users;
 use App\Form\UserLoginType;
 use App\Form\UserRegisterType;
+use App\Form\EditProfilType;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -56,59 +57,67 @@ class UserController extends AbstractController
 
           if(empty($emailUsed))
           {
-            $user->setEmail($emailUser);
-
-            $name = htmlspecialchars($_POST['name']);
-            $user->setName($name);
-
-            $firstname = htmlspecialchars($_POST['firstname']);
-            $user->setFirstname($firstname);
-
-            $plainPassword = htmlspecialchars($_POST['password']);
-            $plainPasswordRepeat = htmlspecialchars($_POST['repeatpassword']);
-
-            if($plainPassword == $plainPasswordRepeat)
+            if(filter_var($emailUser, FILTER_VALIDATE_EMAIL))
             {
-              if (preg_match('#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{6,}$#', $plainPassword)) {
-                $passwordHashed = $this->encoder->encodePassword($user, $plainPassword);
-                $user->setPassword($passwordHashed);
+              $user->setEmail($emailUser);
 
-                $bytes = uniqid();
-                $token = bin2hex($bytes);
-                $user->setToken($token);
+              $name = htmlspecialchars($_POST['name']);
+              $user->setName($name);
 
-                $user->setAdmin('0');
-                $user->setIsActive('0');
-                $user->setIsValide('0');
+              $firstname = htmlspecialchars($_POST['firstname']);
+              $user->setFirstname($firstname);
 
-                $this->em->persist($user);
-                $this->em->flush();
+              $plainPassword = htmlspecialchars($_POST['password']);
+              $plainPasswordRepeat = htmlspecialchars($_POST['repeatpassword']);
+
+              if($plainPassword == $plainPasswordRepeat)
+              {
+                if (preg_match('#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{6,}$#', $plainPassword)) {
+                  $passwordHashed = $this->encoder->encodePassword($user, $plainPassword);
+                  $user->setPassword($passwordHashed);
+
+                  $bytes = uniqid();
+                  $token = bin2hex($bytes);
+                  $user->setToken($token);
+
+                  $user->setAdmin('0');
+                  $user->setIsActive('0');
+                  $user->setIsValide('0');
+
+                  $this->em->persist($user);
+                  $this->em->flush();
 
 
-                $email = (new Email())
-                  ->from('hello@example.com')
-                  ->to($emailUser)
-                  ->subject('Time for Symfony Mailer!')
-                  ->text('Sending emails is fun again!')
-                  ->html("<p>http://localhost/P6/public/activeemail-$token-$name</p>");
+                  $email = (new Email())
+                    ->from('hello@example.com')
+                    ->to($emailUser)
+                    ->subject('Time for Symfony Mailer!')
+                    ->text('Sending emails is fun again!')
+                    ->html("<p>http://localhost/P6/public/activeemail-$token-$name</p>");
 
-                /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
-                $sentEmail = $mailer->send($email);
-                // $messageId = $sentEmail->getMessageId();
-                $this->addFlash('message', 'Vous avez reçu un lien de validation par email');
-                return $this->redirectToRoute('home');
-            	}
+                  /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
+                  $sentEmail = $mailer->send($email);
+                  // $messageId = $sentEmail->getMessageId();
+                  $this->addFlash('message', 'Vous avez reçu un lien de validation par email');
+                  return $this->redirectToRoute('home');
+              	}
 
-                else {
-                    $error = 'Mauvais mot de passe';
-            	}
+                  else {
+                      $error = 'Mauvais mot de passe';
+              	}
+
+              }
+              else {
+                $error = 'Mauvais mot de passe';
+              }
 
             }
             else {
-              $error = 'Mauvais mot de passe';
+              $error = 'Email invalide';
+            }
             }
 
-          }
+
           else {
             $error = 'Cet email est déjà utiliser !';
           }
@@ -135,7 +144,7 @@ class UserController extends AbstractController
       }
       else {
         $user->setIsActive('1');
-        $user->setToken('null');
+        $user->setToken(NULL);
         $this->em->flush();
         $this->addFlash('message', 'Compte validé !');
         return $this->redirectToRoute('home');
@@ -188,7 +197,7 @@ class UserController extends AbstractController
             $error = 'Cet email ne correspond a aucun compte';
           }
 
-        return new Response($this->twig->render('pages/register.html.twig', [
+        return new Response($this->twig->render('pages/resetpassword.html.twig', [
           'error' => $error,
           '_fragment' => 'form'
         ]));
@@ -239,7 +248,7 @@ class UserController extends AbstractController
                 if (preg_match('#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{6,}$#', $plainPassword)) {
                   $passwordHashed = $this->encoder->encodePassword($user, $plainPassword);
                   $user->setPassword($passwordHashed);
-                  $user->setToken('null');
+                  $user->setToken(NULL);
 
                   $this->em->flush();
                   $this->addFlash('message', 'Mot de passe modifié !');
@@ -281,5 +290,97 @@ class UserController extends AbstractController
         'last_username' => $lastUsername,
         '_fragment' => 'form'
       ]));
+    }
+
+    public function profil(): Response
+    {
+        return new Response($this->twig->render('pages/profil.html.twig', [
+
+        ]));
+    }
+
+    public function editprofil(Request $request, UserInterface $user): Response
+    {
+        $form = $this->createForm(EditProfilType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+          // upload Avatar
+          $avatar = $form->get('avatar')->getData();
+
+          if ($avatar) {
+              $originalFilename = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
+
+              $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+              $newFilename = uniqid().'.'.$avatar->guessExtension();
+              try {
+                      $avatar->move(
+                          $this->getParameter('avatar'),
+                          $newFilename
+                      );
+                  } catch (FileException $e) {
+                  }
+              $user->setFilename($newFilename);
+          }
+          // ...
+
+          $this->em->flush();
+          return $this->redirectToRoute('profil');
+        }
+
+
+        return new Response($this->twig->render('pages/editprofil.html.twig', [
+          'form' => $form->createView()
+        ]));
+    }
+
+    public function editprofilpassword(AuthenticationUtils $authentificationUtils): Response
+    {
+      $error = $authentificationUtils->getLastAuthenticationError();
+
+        return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+          'error' => $error
+        ]));
+    }
+
+    public function editprofilpasswordvalide(Request $request, UserInterface $user, AuthenticationUtils $authentificationUtils): Response
+    {
+      $error = $authentificationUtils->getLastAuthenticationError();
+      $plainPassword = htmlspecialchars($_POST['password']);
+      $plainPasswordRepeat = htmlspecialchars($_POST['repeatpassword']);
+
+      if($plainPassword == $plainPasswordRepeat)
+        {
+          if (preg_match('#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{6,}$#', $plainPassword)) {
+            $passwordHashed = $this->encoder->encodePassword($user, $plainPassword);
+            $user->setPassword($passwordHashed);
+
+            $this->em->flush();
+            $this->addFlash('message', 'Mot de passe modifié !');
+            return $this->redirectToRoute('profil');
+          }
+            else {
+                $error = 'Mauvais mot de passe';
+                return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+                  'error' => $error,
+                  '_fragment' => 'form'
+                ]));
+          }
+
+        }
+        else {
+          $error = 'Mauvais mot de passe';
+          return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+            'error' => $error,
+            '_fragment' => 'form'
+          ]));
+        }
+
+      return $this->redirectToRoute("profil");
+
+
+
+        return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+        ]));
     }
 }
