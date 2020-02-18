@@ -24,8 +24,8 @@ class CommentsRepository extends ServiceEntityRepository
       return $this->createQueryBuilder('c')
           ->where("c.tricks = $id")
           ->orderBy('c.datePublish', 'DESC')
-          ->setMaxResults(5)
-          ->setFirstResult($page*5)
+          ->setMaxResults(10)
+          ->setFirstResult($page*10)
           ->getQuery()
           ->getResult();
     }

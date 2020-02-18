@@ -156,13 +156,23 @@ class TricksController extends AbstractController
             $trick->setImgBackground($newFilename);
         }
         // ...
-        $this->em->flush();
-        return $this->redirectToRoute('trick.show', array(
-          'id' => $trick->getId(),
-          'name' => $trick->getName()
-        ));
+        $id = $trick->getId();
+        $name = $form['name']->getData();
+        $repository = $this->getDoctrine()->getRepository(Tricks::class);
+        $tricks = $repository->verifyName($id, $name);
+          if(empty($tricks))
+          {
+            $this->em->flush();
+            return $this->redirectToRoute('trick.show', array(
+              'name' => $trick->getName(),
+              'id' => $trick->getId()
+            ));
+          }
+          else {
+            echo 'Ce tricks existe déjà !';
+          }
       }
-
+      
       $repository = $this->getDoctrine()->getRepository(Medias::class);
       $medias = $repository->findMediasTrick($trick->getId());
 

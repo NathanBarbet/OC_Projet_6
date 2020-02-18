@@ -2,6 +2,13 @@
 
 {% block title %}{{ trick.name }}{% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+
+  <script src="{{ asset('vendor/loadmorecomments/app.js')}}"></script>
+  <script src="{{ asset('vendor/viewmedias/app.js')}}"></script>
+{% endblock %}
+
 {% block body %}
 <!-- Header -->
 <header class="masthead col-lg-12 text-truncate" style="background: linear-gradient(to bottom,rgba(22,22,22,.3) 0,rgba(22,22,22,.7) 75%,#161616 100%),url('img/img_background/{{ trick.imgBackground }}'); background-position: center; background-repeat: no-repeat; background-attachment: scroll; background-size: cover;">
@@ -30,7 +37,8 @@
     <div class="container">
     <div class="p-2">
     {% if medias != null %}
-    <div class="main-content col-xs-12 col-lg-12">
+    <button id="btnViewMedias" class="btn btn-secondary mx-auto my-3 d-block  d-sm-none">Voir Médias</button>
+    <div id="MediasResult" class="main-content col-xs-12 col-lg-12 d-none d-sm-block">
     <div class="owl-carousel owl-theme mx-auto align-items-center col-xs-12 col-lg-12">
       {% for medias in medias %}
         {% if medias.type == "image" %}
@@ -55,6 +63,7 @@
     </div>
     </div>
     {% endif %}
+
 
       <!-- Featured Project Row -->
       <div class="row align-items-center no-gutters mb-4 mb-lg-5">

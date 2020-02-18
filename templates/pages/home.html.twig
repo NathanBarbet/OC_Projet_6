@@ -2,6 +2,12 @@
 
 {% block title %}SnowTricks{% endblock %}
 
+{% block javascripts %}
+  {{ parent() }}
+  
+  <script src="{{ asset('vendor/loadmore/app.js')}}"></script>
+{% endblock %}
+
 {% block body %}
   <!-- Header -->
   <header class="masthead col-lg-12 text-truncate">
