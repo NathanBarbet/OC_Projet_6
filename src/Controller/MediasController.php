@@ -61,10 +61,11 @@ class MediasController extends AbstractController
         $medias->setType('image');
         $this->em->persist($medias);
         $this->em->flush();
+        $this->addFlash('message', 'Votre image à été ajouter');
         return $this->redirectToRoute('trick.edit', array(
           'id' => $trick->getId(),
           'name' => $trick->getName(),
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ));
       }
 
@@ -91,10 +92,11 @@ class MediasController extends AbstractController
 
         $this->em->persist($medias);
         $this->em->flush();
+        $this->addFlash('message', 'Votre vidéo à été ajouter');
         return $this->redirectToRoute('trick.edit', array(
           'id' => $trick->getId(),
           'name' => $trick->getName(),
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ));
       }
 
@@ -110,10 +112,11 @@ class MediasController extends AbstractController
   {
       $this->em->remove($medias);
       $this->em->flush();
+      $this->addFlash('message', 'Le média à été supprimer');
       return $this->redirectToRoute('trick.edit', array(
         'id' => $trickid,
         'name' => $name,
-        '_fragment' => 'form'
+        '_fragment' => 'ancre'
       ));
   }
 }

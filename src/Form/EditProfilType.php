@@ -19,12 +19,12 @@ class EditProfilType extends AbstractType
     {
         $builder
             ->add('name', null, [
-              'required' => false,
+              'required' => true,
               'label' => "Nom",
             ])
 
             ->add('firstname', null, [
-              'required' => false,
+              'required' => true,
               'label' => "Prénom",
             ])
 

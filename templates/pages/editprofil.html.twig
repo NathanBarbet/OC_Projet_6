@@ -13,7 +13,9 @@
   </div>
 </header>
 
-<section id="form">
+<div id="ancre" style="display: block; position: relative; top: -75px; visibility: hidden;"></div>
+
+<section>
 <div class="container">
   <div class="p-2">
 
@@ -37,7 +39,7 @@
           <button class="btn btn-info">Valider</button>
         {{ form_end(form) }}
         </br>
-        <a class="btn btn-secondary" href="{{ path('profil')}}#form">
+        <a class="btn btn-secondary" href="{{ path('profil')}}#ancre">
             Retour
         </a>
       </div>

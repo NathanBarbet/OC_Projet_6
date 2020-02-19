@@ -70,18 +70,29 @@ class CommentsController extends AbstractController
       );
 
       $content = htmlspecialchars($_POST['content']);
-      $comment->setContent($content);
 
-      $comment->setTricks($trick);
-      $comment->setUser($user);
+      if (isset($content) && !empty($content))
+      {
+        $comment->setContent($content);
+        $comment->setTricks($trick);
+        $comment->setUser($user);
 
-      $this->em->persist($comment);
-      $this->em->flush();
-      return $this->redirectToRoute('trick.show', array(
-        'id' => $id,
-        'name' => $name
-      ));
+        $this->em->persist($comment);
+        $this->em->flush();
 
+        $this->addFlash('message', 'Votre commentaire à été poster');
+        return $this->redirectToRoute('trick.show', array(
+          'id' => $id,
+          'name' => $name
+        ));
+      }
+      else
+      {
+        $this->addFlash('message', 'Erreur: Commentaire vide');
+        return $this->redirectToRoute('trick.show', array(
+          'id' => $id,
+          'name' => $name
+        ));
+      }
   }
-
 }

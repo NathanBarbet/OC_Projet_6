@@ -39,7 +39,7 @@ class UserController extends AbstractController
 
       return new Response($this->twig->render('pages/register.html.twig', [
         'error' => $error,
-        '_fragment' => 'form'
+        '_fragment' => 'ancre'
       ]));
     }
 
@@ -89,10 +89,10 @@ class UserController extends AbstractController
 
 
                   $email = (new Email())
-                    ->from('hello@example.com')
+                    ->from('contact@snowtricks.fr')
                     ->to($emailUser)
-                    ->subject('Time for Symfony Mailer!')
-                    ->text('Sending emails is fun again!')
+                    ->subject('Email de validation')
+                    ->text('Cliquez sur le lien pour valider votre email !')
                     ->html("<p>http://localhost/P6/public/activeemail-$token-$name</p>");
 
                   /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
@@ -124,7 +124,7 @@ class UserController extends AbstractController
 
         return new Response($this->twig->render('pages/register.html.twig', [
           'error' => $error,
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ]));
       }
 
@@ -158,7 +158,7 @@ class UserController extends AbstractController
 
         return new Response($this->twig->render('pages/resetpassword.html.twig', [
           'error' => $error,
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ]));
     }
 
@@ -180,10 +180,10 @@ class UserController extends AbstractController
               $this->em->flush();
 
               $email = (new Email())
-                ->from('hello@example.com')
+                ->from('contact@snowtricks.fr')
                 ->to($emailUser)
-                ->subject('Time for Symfony Mailer!')
-                ->text('Sending emails is fun again!')
+                ->subject('Mot de passe oublié')
+                ->text('Cliquez sur le lien pour modifier votre mot de passe')
                 ->html("<p>http://localhost/P6/public/newpassword-$token-$emailUser</p>");
 
               /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
@@ -199,7 +199,7 @@ class UserController extends AbstractController
 
         return new Response($this->twig->render('pages/resetpassword.html.twig', [
           'error' => $error,
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ]));
       }
 
@@ -223,7 +223,7 @@ class UserController extends AbstractController
               'error' => $error,
               'token' => $token,
               'email' => $email,
-              '_fragment' => 'form'
+              '_fragment' => 'ancre'
             ]));
           }
         }
@@ -260,7 +260,7 @@ class UserController extends AbstractController
                         'error' => $error,
                         'token' => $token,
                         'email' => $email,
-                        '_fragment' => 'form'
+                        '_fragment' => 'ancre'
                       ]));
               	}
 
@@ -271,7 +271,7 @@ class UserController extends AbstractController
                   'error' => $error,
                   'token' => $token,
                   'email' => $email,
-                  '_fragment' => 'form'
+                  '_fragment' => 'ancre'
                 ]));
               }
 
@@ -288,7 +288,7 @@ class UserController extends AbstractController
       return new Response($this->twig->render('pages/login.html.twig', [
         'error' => $error,
         'last_username' => $lastUsername,
-        '_fragment' => 'form'
+        '_fragment' => 'ancre'
       ]));
     }
 
@@ -325,6 +325,7 @@ class UserController extends AbstractController
           // ...
 
           $this->em->flush();
+          $this->addFlash('message', 'Votre profil à été mis à jour');
           return $this->redirectToRoute('profil');
         }
 
@@ -363,7 +364,7 @@ class UserController extends AbstractController
                 $error = 'Mauvais mot de passe';
                 return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
                   'error' => $error,
-                  '_fragment' => 'form'
+                  '_fragment' => 'ancre'
                 ]));
           }
 
@@ -372,7 +373,7 @@ class UserController extends AbstractController
           $error = 'Mauvais mot de passe';
           return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
             'error' => $error,
-            '_fragment' => 'form'
+            '_fragment' => 'ancre'
           ]));
         }
 

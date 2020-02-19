@@ -36,10 +36,10 @@
           <ul class="navbar-nav ml-auto">
           {% if not app.user %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('login') }}#form">Login</a>
+              <a class="nav-link" href="{{ path('login') }}#ancre">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('register') }}#form">Inscription</a>
+              <a class="nav-link" href="{{ path('register') }}#ancre">Inscription</a>
             </li>
           {% endif %}
           {% if app.user %}
@@ -47,7 +47,7 @@
               <a class="nav-link" href="{{ path('logout') }}">Logout</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('profil') }}">Profil</a>
+              <a class="nav-link" href="{{ path('profil') }}#ancre">Profil</a>
             </li>
           {% endif %}
           </ul>

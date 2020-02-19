@@ -90,20 +90,29 @@ class TricksController extends AbstractController
             $trick->setImgBackground($newFilename);
         }
         // ...
-        $name = $form['name']->getData();
-        $repository = $this->getDoctrine()->getRepository(Tricks::class);
-        $tricks = $repository->findBy(
-          ['name' => $name]
-        );
-          if(empty($tricks))
-          {
-            $this->em->persist($trick);
-            $this->em->flush();
-            return $this->redirectToRoute('home');
-          }
-          else {
-            echo 'Ce tricks existe déjà !';
-          }
+        $description = $form['description']->getData();
+
+        if (isset($description) && (!empty($description)))
+        {
+          $name = $form['name']->getData();
+          $repository = $this->getDoctrine()->getRepository(Tricks::class);
+          $tricks = $repository->findBy(
+            ['name' => $name]
+          );
+            if(empty($tricks))
+            {
+              $this->em->persist($trick);
+              $this->em->flush();
+              $this->addFlash('message', 'Le trick à été ajouter !');
+              return $this->redirectToRoute('home');
+            }
+            else {
+              echo 'Ce tricks existe déjà !';
+            }
+        }
+        else {
+           echo 'La description ne peux être vide.';
+        }
       }
 
       return new Response($this->twig->render('pages/addtrick.html.twig', [
@@ -156,23 +165,32 @@ class TricksController extends AbstractController
             $trick->setImgBackground($newFilename);
         }
         // ...
-        $id = $trick->getId();
-        $name = $form['name']->getData();
-        $repository = $this->getDoctrine()->getRepository(Tricks::class);
-        $tricks = $repository->verifyName($id, $name);
-          if(empty($tricks))
-          {
-            $this->em->flush();
-            return $this->redirectToRoute('trick.show', array(
-              'name' => $trick->getName(),
-              'id' => $trick->getId()
-            ));
-          }
-          else {
-            echo 'Ce tricks existe déjà !';
-          }
+        $description = $form['description']->getData();
+
+        if (isset($description) && (!empty($description)))
+        {
+          $id = $trick->getId();
+          $name = $form['name']->getData();
+          $repository = $this->getDoctrine()->getRepository(Tricks::class);
+          $tricks = $repository->verifyName($id, $name);
+            if(empty($tricks))
+            {
+              $this->em->flush();
+              $this->addFlash('message', 'Le trick à été modifier !');
+              return $this->redirectToRoute('trick.show', array(
+                'name' => $trick->getName(),
+                'id' => $trick->getId()
+              ));
+            }
+            else {
+              echo 'Ce tricks existe déjà !';
+            }
+        }
+        else {
+          echo 'La description ne peux être vide.';
+        }
       }
-      
+
       $repository = $this->getDoctrine()->getRepository(Medias::class);
       $medias = $repository->findMediasTrick($trick->getId());
 
@@ -187,6 +205,7 @@ class TricksController extends AbstractController
   {
       $this->em->remove($trick);
       $this->em->flush();
+      $this->addFlash('message', 'Trick supprimer');
       return $this->redirectToRoute('home', array(
         '_fragment' => 'projects'
       ));

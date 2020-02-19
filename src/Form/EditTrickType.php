@@ -22,10 +22,12 @@ class EditTrickType extends AbstractType
     {
         $builder
             ->add('name', null, [
-              'label' => 'Nom *'
+              'label' => 'Nom *',
+              'required' => true
             ])
             ->add('description', TextareaType::class, [
-              'label' => 'Description *'
+              'label' => 'Description *',
+              'required' => false
             ])
             ->add('imageHome', Filetype::class, [
               'label' => "Image de la page d'accueil ",
@@ -58,7 +60,8 @@ class EditTrickType extends AbstractType
                     ])
             ]            ])
             ->add('groupe', null, [
-              'label' => 'Groupe *'
+              'label' => 'Groupe *',
+              'required' => true
             ])
 
             ;
