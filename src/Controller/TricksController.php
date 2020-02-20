@@ -38,7 +38,7 @@ class TricksController extends AbstractController
       $repository = $this->getDoctrine()->getRepository(Medias::class);
       $medias = $repository->findMediasTrick($id);
 
-      return new Response($this->twig->render('pages/trick.html.twig', [
+      return new Response($this->twig->render('pages/tricks/trick.html.twig', [
         'trick' => $trick,
         'medias' => $medias
       ]));
@@ -46,6 +46,7 @@ class TricksController extends AbstractController
 
   public function addtrick(Request $request, UserInterface $user): Response
   {
+      $title = 'Ajouter un trick';
       $trick = new Tricks();
       $form = $this->createForm(TrickType::class, $trick);
       $form->handleRequest($request);
@@ -115,7 +116,8 @@ class TricksController extends AbstractController
         }
       }
 
-      return new Response($this->twig->render('pages/addtrick.html.twig', [
+      return new Response($this->twig->render('pages/formtemplate.html.twig', [
+        'title' => $title,
         'trick' => $trick,
         'form' => $form->createView()
       ]));
@@ -194,7 +196,7 @@ class TricksController extends AbstractController
       $repository = $this->getDoctrine()->getRepository(Medias::class);
       $medias = $repository->findMediasTrick($trick->getId());
 
-      return new Response($this->twig->render('pages/edittrick.html.twig', [
+      return new Response($this->twig->render('pages/tricks/edittrick.html.twig', [
         'medias' => $medias,
         'trick' => $trick,
         'form' => $form->createView()

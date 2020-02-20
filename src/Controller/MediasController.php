@@ -33,6 +33,7 @@ class MediasController extends AbstractController
 
   public function addmediasimage(Tricks $trick,Request $request): Response
   {
+      $title = 'Ajouter une image';
       $medias = new Medias;
       $form = $this->createForm(MediasImageType::class, $medias);
       $form->handleRequest($request);
@@ -69,7 +70,8 @@ class MediasController extends AbstractController
         ));
       }
 
-      return new Response($this->twig->render('pages/addmediasimagetrick.html.twig',  [
+      return new Response($this->twig->render('pages/formtemplate.html.twig',  [
+        'title' => $title,
         'trick' => $trick,
         'medias' => $medias,
         'form' => $form->createView()
@@ -78,6 +80,7 @@ class MediasController extends AbstractController
 
   public function addmediasvideo(Tricks $trick,Request $request): Response
   {
+      $title = 'Ajouter une vidéo';
       $medias = new Medias;
       $form = $this->createForm(MediasVideoType::class, $medias);
       $form->handleRequest($request);
@@ -100,7 +103,8 @@ class MediasController extends AbstractController
         ));
       }
 
-      return new Response($this->twig->render('pages/addmediasvideotrick.html.twig',  [
+      return new Response($this->twig->render('pages/formtemplate.html.twig',  [
+        'title' => $title,
         'trick' => $trick,
         'medias' => $medias,
         'form' => $form->createView()

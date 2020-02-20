@@ -43,7 +43,7 @@ class CommentsController extends AbstractController
     $repository = $this->getDoctrine()->getRepository(Comments::class);
     $comments = $repository->findRecentComments($id, $currentPage);
 
-    $result =  $this->twig->render('pages/commentsajax.html.twig', [
+    $result =  $this->twig->render('pages/ajax/commentsajax.html.twig', [
         'comments' => $comments
     ]);
 

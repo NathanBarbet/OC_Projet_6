@@ -37,7 +37,7 @@ class UserController extends AbstractController
       $error = $authentificationUtils->getLastAuthenticationError();
 
 
-      return new Response($this->twig->render('pages/register.html.twig', [
+      return new Response($this->twig->render('pages/users/register.html.twig', [
         'error' => $error,
         '_fragment' => 'ancre'
       ]));
@@ -122,7 +122,7 @@ class UserController extends AbstractController
             $error = 'Cet email est déjà utiliser !';
           }
 
-        return new Response($this->twig->render('pages/register.html.twig', [
+        return new Response($this->twig->render('pages/users/register.html.twig', [
           'error' => $error,
           '_fragment' => 'ancre'
         ]));
@@ -156,7 +156,7 @@ class UserController extends AbstractController
     {
         $error = $authentificationUtils->getLastAuthenticationError();
 
-        return new Response($this->twig->render('pages/resetpassword.html.twig', [
+        return new Response($this->twig->render('pages/users/resetpassword.html.twig', [
           'error' => $error,
           '_fragment' => 'ancre'
         ]));
@@ -197,7 +197,7 @@ class UserController extends AbstractController
             $error = 'Cet email ne correspond a aucun compte';
           }
 
-        return new Response($this->twig->render('pages/resetpassword.html.twig', [
+        return new Response($this->twig->render('pages/users/resetpassword.html.twig', [
           'error' => $error,
           '_fragment' => 'ancre'
         ]));
@@ -219,7 +219,7 @@ class UserController extends AbstractController
           }
           else {
 
-            return new Response($this->twig->render('pages/newpassword.html.twig', [
+            return new Response($this->twig->render('pages/users/newpassword.html.twig', [
               'error' => $error,
               'token' => $token,
               'email' => $email,
@@ -256,7 +256,7 @@ class UserController extends AbstractController
               	}
                   else {
                       $error = 'Mauvais mot de passe';
-                      return new Response($this->twig->render('pages/newpassword.html.twig', [
+                      return new Response($this->twig->render('pages/users/newpassword.html.twig', [
                         'error' => $error,
                         'token' => $token,
                         'email' => $email,
@@ -267,7 +267,7 @@ class UserController extends AbstractController
               }
               else {
                 $error = 'Mauvais mot de passe';
-                return new Response($this->twig->render('pages/newpassword.html.twig', [
+                return new Response($this->twig->render('pages/users/newpassword.html.twig', [
                   'error' => $error,
                   'token' => $token,
                   'email' => $email,
@@ -285,7 +285,7 @@ class UserController extends AbstractController
     $error = $authentificationUtils->getLastAuthenticationError();
     $lastUsername = $authentificationUtils->getLastUsername();
 
-      return new Response($this->twig->render('pages/login.html.twig', [
+      return new Response($this->twig->render('pages/users/login.html.twig', [
         'error' => $error,
         'last_username' => $lastUsername,
         '_fragment' => 'ancre'
@@ -294,7 +294,7 @@ class UserController extends AbstractController
 
     public function profil(): Response
     {
-        return new Response($this->twig->render('pages/profil.html.twig', [
+        return new Response($this->twig->render('pages/users/profil.html.twig', [
 
         ]));
     }
@@ -330,7 +330,7 @@ class UserController extends AbstractController
         }
 
 
-        return new Response($this->twig->render('pages/editprofil.html.twig', [
+        return new Response($this->twig->render('pages/users/editprofil.html.twig', [
           'form' => $form->createView()
         ]));
     }
@@ -339,7 +339,7 @@ class UserController extends AbstractController
     {
       $error = $authentificationUtils->getLastAuthenticationError();
 
-        return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+        return new Response($this->twig->render('pages/users/editprofilpassword.html.twig', [
           'error' => $error
         ]));
     }
@@ -362,7 +362,7 @@ class UserController extends AbstractController
           }
             else {
                 $error = 'Mauvais mot de passe';
-                return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+                return new Response($this->twig->render('pages/users/editprofilpassword.html.twig', [
                   'error' => $error,
                   '_fragment' => 'ancre'
                 ]));
@@ -371,7 +371,7 @@ class UserController extends AbstractController
         }
         else {
           $error = 'Mauvais mot de passe';
-          return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+          return new Response($this->twig->render('pages/users/editprofilpassword.html.twig', [
             'error' => $error,
             '_fragment' => 'ancre'
           ]));
@@ -381,7 +381,7 @@ class UserController extends AbstractController
 
 
 
-        return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+        return new Response($this->twig->render('pages/users/editprofilpassword.html.twig', [
         ]));
     }
 }
