@@ -82,7 +82,7 @@
         <div>
           <p><i class="far fa-share-square"></i> {{ trick.datePublish|date("d/m/Y à H:i:s") }} par {{ trick.user.firstname }} {{ trick.user.name }} </p>
         </div>
-        {% if trick.dateModify != null %}
+        {% if trick.dateModify != null and trick.userModify != null %}
         <div>
           <p><i class="far fa-edit"></i> Modifier le ( {{ trick.dateModify|date("d/m/Y à H:i:s") }} par {{ trick.userModify.firstname }} {{ trick.userModify.name }}) </p>
         </div>

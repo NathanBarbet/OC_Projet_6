@@ -203,13 +203,24 @@ class TricksController extends AbstractController
       ]));
   }
 
-  public function delete(Tricks $trick): Response
+  public function delete(Tricks $trick, UserInterface $user): Response
   {
-      $this->em->remove($trick);
-      $this->em->flush();
-      $this->addFlash('message', 'Trick supprimer');
-      return $this->redirectToRoute('home', array(
-        '_fragment' => 'projects'
-      ));
+      $user = $this->getUser();
+      $userActive = $user->getIsActive();
+      $userValide = $user->getIsValide();
+      if ($userActive === true & $userValide === true)
+      {
+        $this->em->remove($trick);
+        $this->em->flush();
+        $this->addFlash('message', 'Trick supprimer');
+        return $this->redirectToRoute('home', array(
+          '_fragment' => 'projects'
+        ));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
   }
 }

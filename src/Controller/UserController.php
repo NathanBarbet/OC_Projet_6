@@ -383,5 +383,102 @@ class UserController extends AbstractController
 
         return new Response($this->twig->render('pages/users/editprofilpassword.html.twig', [
         ]));
+
+    }
+
+    public function admin(UserInterface $user): Response
+    {
+      $user = $this->getUser();
+      $userAdmin = $user->getAdmin();
+      if ($userAdmin === true)
+      {
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $users = $repository->findUsers();
+
+        return new Response($this->twig->render('pages/admin/admin.html.twig', [
+          'users' => $users,
+        ]));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
+    }
+
+    public function valideuser($id, UserInterface $user): Response
+    {
+      $user = $this->getUser();
+      $userAdmin = $user->getAdmin();
+      if ($userAdmin === true)
+      {
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $user = $repository->findOneBy(
+          ['id' => $id]
+        );
+
+        $user->setIsValide('1');
+        $this->em->flush();
+        return $this->redirectToRoute('admin', array(
+          '_fragment' => 'ancre'
+        ));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
+
+      return new Response($this->twig->render('pages/admin/admin.html.twig', [
+        'users' => $users
+      ]));
+    }
+
+    public function unvalideuser($id, UserInterface $user): Response
+    {
+      $user = $this->getUser();
+      $userAdmin = $user->getAdmin();
+      if ($userAdmin === true)
+      {
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $user = $repository->findOneBy(
+          ['id' => $id]
+        );
+
+        $user->setIsValide('0');
+        $this->em->flush();
+        return $this->redirectToRoute('viewvalideuser', array(
+          '_fragment' => 'ancre'
+        ));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
+
+      return new Response($this->twig->render('pages/admin/admin.html.twig', [
+        'users' => $users
+      ]));
+    }
+
+    public function viewvalideuser(): Response
+    {
+      $user = $this->getUser();
+      $userAdmin = $user->getAdmin();
+      if ($userAdmin === true)
+      {
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $users = $repository->findUsers();
+
+        return new Response($this->twig->render('pages/admin/valideuser.html.twig', [
+          'users' => $users,
+        ]));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
     }
 }

@@ -49,6 +49,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ path('profil') }}#ancre">Profil</a>
             </li>
+            {% if app.user and app.user.admin == 1 %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin') }}#ancre">Admin</a>
+              </li>
+            {% endif %}
           {% endif %}
           </ul>
         </div>

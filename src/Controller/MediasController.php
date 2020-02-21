@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 use App\Repository\MediasRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class MediasController extends AbstractController
 {
@@ -112,8 +113,13 @@ class MediasController extends AbstractController
   }
 
 
-  public function delete($trickid, $name, Medias $medias, Request $request): Response
+  public function delete($trickid, $name, Medias $medias, Request $request, UserInterface $user): Response
   {
+    $user = $this->getUser();
+    $userActive = $user->getIsActive();
+    $userValide = $user->getIsValide();
+    if ($userActive === true & $userValide === true)
+    {
       $this->em->remove($medias);
       $this->em->flush();
       $this->addFlash('message', 'Le média à été supprimer');
@@ -122,5 +128,11 @@ class MediasController extends AbstractController
         'name' => $name,
         '_fragment' => 'ancre'
       ));
+    }
+    else
+    {
+      $this->addFlash('message', "Vous n'avez pas l'autorisation");
+      return $this->redirectToRoute('home');
+    }
   }
 }

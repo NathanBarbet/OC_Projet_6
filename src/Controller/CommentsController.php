@@ -26,14 +26,24 @@ class CommentsController extends AbstractController
     $this->em = $em;
   }
 
-  public function delete($trickid, $trickname, Comments $comment): Response
+  public function delete($trickid, $trickname, Comments $comment, UserInterface $user): Response
   {
+    $user = $this->getUser();
+    $userAdmin = $user->getAdmin();
+    if ($userAdmin === true)
+    {
       $this->em->remove($comment);
       $this->em->flush();
       return $this->redirectToRoute('trick.show', array(
         'id' => $trickid,
         'name' => $trickname
       ));
+    }
+    else
+    {
+      $this->addFlash('message', "Vous n'avez pas l'autorisation");
+      return $this->redirectToRoute('home');
+    }
   }
 
   public function commentsAjax(Request $request)

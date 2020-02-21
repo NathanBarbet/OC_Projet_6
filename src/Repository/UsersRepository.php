@@ -19,6 +19,15 @@ class UsersRepository extends ServiceEntityRepository
         parent::__construct($registry, Users::class);
     }
 
+
+    public function findUsers()
+    {
+      return $this->createQueryBuilder('u')
+          ->orderBy('u.dateRegister', 'DESC')
+          ->getQuery()
+          ->getResult();
+    }
+
     // /**
     //  * @return Users[] Returns an array of Users objects
     //  */
