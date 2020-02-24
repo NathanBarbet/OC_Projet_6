@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 use App\Repository\MediasRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class MediasController extends AbstractController
 {
@@ -33,6 +34,7 @@ class MediasController extends AbstractController
 
   public function addmediasimage(Tricks $trick,Request $request): Response
   {
+      $title = 'Ajouter une image';
       $medias = new Medias;
       $form = $this->createForm(MediasImageType::class, $medias);
       $form->handleRequest($request);
@@ -61,14 +63,16 @@ class MediasController extends AbstractController
         $medias->setType('image');
         $this->em->persist($medias);
         $this->em->flush();
+        $this->addFlash('message', 'Votre image à été ajouter');
         return $this->redirectToRoute('trick.edit', array(
           'id' => $trick->getId(),
           'name' => $trick->getName(),
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ));
       }
 
-      return new Response($this->twig->render('pages/addmediasimagetrick.html.twig',  [
+      return new Response($this->twig->render('pages/formtemplate.html.twig',  [
+        'title' => $title,
         'trick' => $trick,
         'medias' => $medias,
         'form' => $form->createView()
@@ -77,6 +81,7 @@ class MediasController extends AbstractController
 
   public function addmediasvideo(Tricks $trick,Request $request): Response
   {
+      $title = 'Ajouter une vidéo';
       $medias = new Medias;
       $form = $this->createForm(MediasVideoType::class, $medias);
       $form->handleRequest($request);
@@ -91,14 +96,16 @@ class MediasController extends AbstractController
 
         $this->em->persist($medias);
         $this->em->flush();
+        $this->addFlash('message', 'Votre vidéo à été ajouter');
         return $this->redirectToRoute('trick.edit', array(
           'id' => $trick->getId(),
           'name' => $trick->getName(),
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ));
       }
 
-      return new Response($this->twig->render('pages/addmediasvideotrick.html.twig',  [
+      return new Response($this->twig->render('pages/formtemplate.html.twig',  [
+        'title' => $title,
         'trick' => $trick,
         'medias' => $medias,
         'form' => $form->createView()
@@ -106,14 +113,26 @@ class MediasController extends AbstractController
   }
 
 
-  public function delete($trickid, $name, Medias $medias, Request $request): Response
+  public function delete($trickid, $name, Medias $medias, Request $request, UserInterface $user): Response
   {
+    $user = $this->getUser();
+    $userActive = $user->getIsActive();
+    $userValide = $user->getIsValide();
+    if ($userActive === true & $userValide === true)
+    {
       $this->em->remove($medias);
       $this->em->flush();
+      $this->addFlash('message', 'Le média à été supprimer');
       return $this->redirectToRoute('trick.edit', array(
         'id' => $trickid,
         'name' => $name,
-        '_fragment' => 'form'
+        '_fragment' => 'ancre'
       ));
+    }
+    else
+    {
+      $this->addFlash('message', "Vous n'avez pas l'autorisation");
+      return $this->redirectToRoute('home');
+    }
   }
 }

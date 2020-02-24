@@ -36,10 +36,10 @@
           <ul class="navbar-nav ml-auto">
           {% if not app.user %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('login') }}">Login</a>
+              <a class="nav-link" href="{{ path('login') }}#ancre">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('register') }}">Inscription</a>
+              <a class="nav-link" href="{{ path('register') }}#ancre">Inscription</a>
             </li>
           {% endif %}
           {% if app.user %}
@@ -47,8 +47,13 @@
               <a class="nav-link" href="{{ path('logout') }}">Logout</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('profil') }}">Profil</a>
+              <a class="nav-link" href="{{ path('profil') }}#ancre">Profil</a>
             </li>
+            {% if app.user and app.user.admin == 1 %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin') }}#ancre">Admin</a>
+              </li>
+            {% endif %}
           {% endif %}
           </ul>
         </div>
@@ -72,9 +77,6 @@
               <a href="#" class="mx-2">
                 <i class="fab fa-facebook-f"></i>
               </a>
-              <a href="#" class="mx-2">
-                <i class="fab fa-github"></i>
-              </a>
             </div>
 
           </div>
@@ -83,17 +85,16 @@
         <!-- Footer -->
         <footer class="bg-black small text-center text-white-50">
           <div class="container">
-            Copyright &copy; Your Website 2019
+            Copyright &copy; SnowTricks 2020
           </div>
         </footer>
         <!-- Bootstrap core JavaScript -->
+        {% block javascripts %}
         <script src="{{ asset('vendor/jquery/jquery.min.js')}}"></script>
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.js')}}"></script>
         <script src="{{ asset('vendor/owlcarousel/owl.carousel.js')}}"></script>
         <script src="{{ asset('vendor/owlcarousel/app.js')}}"></script>
-        <script src="{{ asset('vendor/loadmore/app.js')}}"></script>
-        <script src="{{ asset('vendor/loadmorecomments/app.js')}}"></script>
         <script src="{{ asset('vendor/fileupload/app.js')}}"></script>
         <script src="{{ asset('vendor/tinymce/app.js')}}"></script>
 
@@ -102,6 +103,7 @@
 
         <!-- Custom scripts for this template -->
         <script src="{{ asset('js/grayscale.min.js')}}"></script>
+        {% endblock %}
 
     </body>
 </html>

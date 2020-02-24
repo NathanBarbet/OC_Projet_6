@@ -26,14 +26,24 @@ class CommentsController extends AbstractController
     $this->em = $em;
   }
 
-  public function delete($trickid, $trickname, Comments $comment): Response
+  public function delete($trickid, $trickname, Comments $comment, UserInterface $user): Response
   {
+    $user = $this->getUser();
+    $userAdmin = $user->getAdmin();
+    if ($userAdmin === true)
+    {
       $this->em->remove($comment);
       $this->em->flush();
       return $this->redirectToRoute('trick.show', array(
         'id' => $trickid,
         'name' => $trickname
       ));
+    }
+    else
+    {
+      $this->addFlash('message', "Vous n'avez pas l'autorisation");
+      return $this->redirectToRoute('home');
+    }
   }
 
   public function commentsAjax(Request $request)
@@ -43,7 +53,7 @@ class CommentsController extends AbstractController
     $repository = $this->getDoctrine()->getRepository(Comments::class);
     $comments = $repository->findRecentComments($id, $currentPage);
 
-    $result =  $this->twig->render('pages/commentsajax.html.twig', [
+    $result =  $this->twig->render('pages/ajax/commentsajax.html.twig', [
         'comments' => $comments
     ]);
 
@@ -70,18 +80,29 @@ class CommentsController extends AbstractController
       );
 
       $content = htmlspecialchars($_POST['content']);
-      $comment->setContent($content);
 
-      $comment->setTricks($trick);
-      $comment->setUser($user);
+      if (isset($content) && !empty($content))
+      {
+        $comment->setContent($content);
+        $comment->setTricks($trick);
+        $comment->setUser($user);
 
-      $this->em->persist($comment);
-      $this->em->flush();
-      return $this->redirectToRoute('trick.show', array(
-        'id' => $id,
-        'name' => $name
-      ));
+        $this->em->persist($comment);
+        $this->em->flush();
 
+        $this->addFlash('message', 'Votre commentaire à été poster');
+        return $this->redirectToRoute('trick.show', array(
+          'id' => $id,
+          'name' => $name
+        ));
+      }
+      else
+      {
+        $this->addFlash('message', 'Erreur: Commentaire vide');
+        return $this->redirectToRoute('trick.show', array(
+          'id' => $id,
+          'name' => $name
+        ));
+      }
   }
-
 }

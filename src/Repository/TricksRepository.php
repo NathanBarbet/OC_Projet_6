@@ -40,6 +40,16 @@ class TricksRepository extends ServiceEntityRepository
           ->getResult();
     }
 
+    public function verifyName($id, $name)
+    {
+      return $this->createQueryBuilder('t')
+          ->where("t.id != $id")
+          ->andWhere("t.name = :name")
+          ->setParameter('name', $name)
+          ->getQuery()
+          ->getResult();
+    }
+
 
 
     // /**

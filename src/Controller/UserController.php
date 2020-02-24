@@ -37,9 +37,9 @@ class UserController extends AbstractController
       $error = $authentificationUtils->getLastAuthenticationError();
 
 
-      return new Response($this->twig->render('pages/register.html.twig', [
+      return new Response($this->twig->render('pages/users/register.html.twig', [
         'error' => $error,
-        '_fragment' => 'form'
+        '_fragment' => 'ancre'
       ]));
     }
 
@@ -89,10 +89,10 @@ class UserController extends AbstractController
 
 
                   $email = (new Email())
-                    ->from('hello@example.com')
+                    ->from('contact@snowtricks.fr')
                     ->to($emailUser)
-                    ->subject('Time for Symfony Mailer!')
-                    ->text('Sending emails is fun again!')
+                    ->subject('Email de validation')
+                    ->text('Cliquez sur le lien pour valider votre email !')
                     ->html("<p>http://localhost/P6/public/activeemail-$token-$name</p>");
 
                   /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
@@ -122,9 +122,9 @@ class UserController extends AbstractController
             $error = 'Cet email est déjà utiliser !';
           }
 
-        return new Response($this->twig->render('pages/register.html.twig', [
+        return new Response($this->twig->render('pages/users/register.html.twig', [
           'error' => $error,
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ]));
       }
 
@@ -156,9 +156,9 @@ class UserController extends AbstractController
     {
         $error = $authentificationUtils->getLastAuthenticationError();
 
-        return new Response($this->twig->render('pages/resetpassword.html.twig', [
+        return new Response($this->twig->render('pages/users/resetpassword.html.twig', [
           'error' => $error,
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ]));
     }
 
@@ -180,10 +180,10 @@ class UserController extends AbstractController
               $this->em->flush();
 
               $email = (new Email())
-                ->from('hello@example.com')
+                ->from('contact@snowtricks.fr')
                 ->to($emailUser)
-                ->subject('Time for Symfony Mailer!')
-                ->text('Sending emails is fun again!')
+                ->subject('Mot de passe oublié')
+                ->text('Cliquez sur le lien pour modifier votre mot de passe')
                 ->html("<p>http://localhost/P6/public/newpassword-$token-$emailUser</p>");
 
               /** @var Symfony\Component\Mailer\SentMessage $sentEmail */
@@ -197,9 +197,9 @@ class UserController extends AbstractController
             $error = 'Cet email ne correspond a aucun compte';
           }
 
-        return new Response($this->twig->render('pages/resetpassword.html.twig', [
+        return new Response($this->twig->render('pages/users/resetpassword.html.twig', [
           'error' => $error,
-          '_fragment' => 'form'
+          '_fragment' => 'ancre'
         ]));
       }
 
@@ -219,11 +219,11 @@ class UserController extends AbstractController
           }
           else {
 
-            return new Response($this->twig->render('pages/newpassword.html.twig', [
+            return new Response($this->twig->render('pages/users/newpassword.html.twig', [
               'error' => $error,
               'token' => $token,
               'email' => $email,
-              '_fragment' => 'form'
+              '_fragment' => 'ancre'
             ]));
           }
         }
@@ -256,22 +256,22 @@ class UserController extends AbstractController
               	}
                   else {
                       $error = 'Mauvais mot de passe';
-                      return new Response($this->twig->render('pages/newpassword.html.twig', [
+                      return new Response($this->twig->render('pages/users/newpassword.html.twig', [
                         'error' => $error,
                         'token' => $token,
                         'email' => $email,
-                        '_fragment' => 'form'
+                        '_fragment' => 'ancre'
                       ]));
               	}
 
               }
               else {
                 $error = 'Mauvais mot de passe';
-                return new Response($this->twig->render('pages/newpassword.html.twig', [
+                return new Response($this->twig->render('pages/users/newpassword.html.twig', [
                   'error' => $error,
                   'token' => $token,
                   'email' => $email,
-                  '_fragment' => 'form'
+                  '_fragment' => 'ancre'
                 ]));
               }
 
@@ -285,16 +285,16 @@ class UserController extends AbstractController
     $error = $authentificationUtils->getLastAuthenticationError();
     $lastUsername = $authentificationUtils->getLastUsername();
 
-      return new Response($this->twig->render('pages/login.html.twig', [
+      return new Response($this->twig->render('pages/users/login.html.twig', [
         'error' => $error,
         'last_username' => $lastUsername,
-        '_fragment' => 'form'
+        '_fragment' => 'ancre'
       ]));
     }
 
     public function profil(): Response
     {
-        return new Response($this->twig->render('pages/profil.html.twig', [
+        return new Response($this->twig->render('pages/users/profil.html.twig', [
 
         ]));
     }
@@ -325,11 +325,12 @@ class UserController extends AbstractController
           // ...
 
           $this->em->flush();
+          $this->addFlash('message', 'Votre profil à été mis à jour');
           return $this->redirectToRoute('profil');
         }
 
 
-        return new Response($this->twig->render('pages/editprofil.html.twig', [
+        return new Response($this->twig->render('pages/users/editprofil.html.twig', [
           'form' => $form->createView()
         ]));
     }
@@ -338,7 +339,7 @@ class UserController extends AbstractController
     {
       $error = $authentificationUtils->getLastAuthenticationError();
 
-        return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+        return new Response($this->twig->render('pages/users/editprofilpassword.html.twig', [
           'error' => $error
         ]));
     }
@@ -361,18 +362,18 @@ class UserController extends AbstractController
           }
             else {
                 $error = 'Mauvais mot de passe';
-                return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+                return new Response($this->twig->render('pages/users/editprofilpassword.html.twig', [
                   'error' => $error,
-                  '_fragment' => 'form'
+                  '_fragment' => 'ancre'
                 ]));
           }
 
         }
         else {
           $error = 'Mauvais mot de passe';
-          return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+          return new Response($this->twig->render('pages/users/editprofilpassword.html.twig', [
             'error' => $error,
-            '_fragment' => 'form'
+            '_fragment' => 'ancre'
           ]));
         }
 
@@ -380,7 +381,104 @@ class UserController extends AbstractController
 
 
 
-        return new Response($this->twig->render('pages/editprofilpassword.html.twig', [
+        return new Response($this->twig->render('pages/users/editprofilpassword.html.twig', [
         ]));
+
+    }
+
+    public function admin(UserInterface $user): Response
+    {
+      $user = $this->getUser();
+      $userAdmin = $user->getAdmin();
+      if ($userAdmin === true)
+      {
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $users = $repository->findUsers();
+
+        return new Response($this->twig->render('pages/admin/admin.html.twig', [
+          'users' => $users,
+        ]));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
+    }
+
+    public function valideuser($id, UserInterface $user): Response
+    {
+      $user = $this->getUser();
+      $userAdmin = $user->getAdmin();
+      if ($userAdmin === true)
+      {
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $user = $repository->findOneBy(
+          ['id' => $id]
+        );
+
+        $user->setIsValide('1');
+        $this->em->flush();
+        return $this->redirectToRoute('admin', array(
+          '_fragment' => 'ancre'
+        ));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
+
+      return new Response($this->twig->render('pages/admin/admin.html.twig', [
+        'users' => $users
+      ]));
+    }
+
+    public function unvalideuser($id, UserInterface $user): Response
+    {
+      $user = $this->getUser();
+      $userAdmin = $user->getAdmin();
+      if ($userAdmin === true)
+      {
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $user = $repository->findOneBy(
+          ['id' => $id]
+        );
+
+        $user->setIsValide('0');
+        $this->em->flush();
+        return $this->redirectToRoute('viewvalideuser', array(
+          '_fragment' => 'ancre'
+        ));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
+
+      return new Response($this->twig->render('pages/admin/admin.html.twig', [
+        'users' => $users
+      ]));
+    }
+
+    public function viewvalideuser(): Response
+    {
+      $user = $this->getUser();
+      $userAdmin = $user->getAdmin();
+      if ($userAdmin === true)
+      {
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $users = $repository->findUsers();
+
+        return new Response($this->twig->render('pages/admin/valideuser.html.twig', [
+          'users' => $users,
+        ]));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
     }
 }

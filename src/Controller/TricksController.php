@@ -38,7 +38,7 @@ class TricksController extends AbstractController
       $repository = $this->getDoctrine()->getRepository(Medias::class);
       $medias = $repository->findMediasTrick($id);
 
-      return new Response($this->twig->render('pages/trick.html.twig', [
+      return new Response($this->twig->render('pages/tricks/trick.html.twig', [
         'trick' => $trick,
         'medias' => $medias
       ]));
@@ -46,6 +46,7 @@ class TricksController extends AbstractController
 
   public function addtrick(Request $request, UserInterface $user): Response
   {
+      $title = 'Ajouter un trick';
       $trick = new Tricks();
       $form = $this->createForm(TrickType::class, $trick);
       $form->handleRequest($request);
@@ -90,23 +91,33 @@ class TricksController extends AbstractController
             $trick->setImgBackground($newFilename);
         }
         // ...
-        $name = $form['name']->getData();
-        $repository = $this->getDoctrine()->getRepository(Tricks::class);
-        $tricks = $repository->findBy(
-          ['name' => $name]
-        );
-          if(empty($tricks))
-          {
-            $this->em->persist($trick);
-            $this->em->flush();
-            return $this->redirectToRoute('home');
-          }
-          else {
-            echo 'Ce tricks existe déjà !';
-          }
+        $description = $form['description']->getData();
+
+        if (isset($description) && (!empty($description)))
+        {
+          $name = $form['name']->getData();
+          $repository = $this->getDoctrine()->getRepository(Tricks::class);
+          $tricks = $repository->findBy(
+            ['name' => $name]
+          );
+            if(empty($tricks))
+            {
+              $this->em->persist($trick);
+              $this->em->flush();
+              $this->addFlash('message', 'Le trick à été ajouter !');
+              return $this->redirectToRoute('home');
+            }
+            else {
+              echo 'Ce tricks existe déjà !';
+            }
+        }
+        else {
+           echo 'La description ne peux être vide.';
+        }
       }
 
-      return new Response($this->twig->render('pages/addtrick.html.twig', [
+      return new Response($this->twig->render('pages/formtemplate.html.twig', [
+        'title' => $title,
         'trick' => $trick,
         'form' => $form->createView()
       ]));
@@ -156,29 +167,60 @@ class TricksController extends AbstractController
             $trick->setImgBackground($newFilename);
         }
         // ...
-        $this->em->flush();
-        return $this->redirectToRoute('trick.show', array(
-          'id' => $trick->getId(),
-          'name' => $trick->getName()
-        ));
+        $description = $form['description']->getData();
+
+        if (isset($description) && (!empty($description)))
+        {
+          $id = $trick->getId();
+          $name = $form['name']->getData();
+          $repository = $this->getDoctrine()->getRepository(Tricks::class);
+          $tricks = $repository->verifyName($id, $name);
+            if(empty($tricks))
+            {
+              $this->em->flush();
+              $this->addFlash('message', 'Le trick à été modifier !');
+              return $this->redirectToRoute('trick.show', array(
+                'name' => $trick->getName(),
+                'id' => $trick->getId()
+              ));
+            }
+            else {
+              echo 'Ce tricks existe déjà !';
+            }
+        }
+        else {
+          echo 'La description ne peux être vide.';
+        }
       }
 
       $repository = $this->getDoctrine()->getRepository(Medias::class);
       $medias = $repository->findMediasTrick($trick->getId());
 
-      return new Response($this->twig->render('pages/edittrick.html.twig', [
+      return new Response($this->twig->render('pages/tricks/edittrick.html.twig', [
         'medias' => $medias,
         'trick' => $trick,
         'form' => $form->createView()
       ]));
   }
 
-  public function delete(Tricks $trick): Response
+  public function delete(Tricks $trick, UserInterface $user): Response
   {
-      $this->em->remove($trick);
-      $this->em->flush();
-      return $this->redirectToRoute('home', array(
-        '_fragment' => 'projects'
-      ));
+      $user = $this->getUser();
+      $userActive = $user->getIsActive();
+      $userValide = $user->getIsValide();
+      if ($userActive === true & $userValide === true)
+      {
+        $this->em->remove($trick);
+        $this->em->flush();
+        $this->addFlash('message', 'Trick supprimer');
+        return $this->redirectToRoute('home', array(
+          '_fragment' => 'projects'
+        ));
+      }
+      else
+      {
+        $this->addFlash('message', "Vous n'avez pas l'autorisation");
+        return $this->redirectToRoute('home');
+      }
   }
 }

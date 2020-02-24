@@ -34,8 +34,8 @@ class HomeController extends AbstractController
     $currentPage = $_POST['page'];
     $repository = $this->getDoctrine()->getRepository(Tricks::class);
     $tricks = $repository->findRecentTricks($currentPage);
-  
-    $result =  $this->twig->render('pages/tricksajax.html.twig', [
+
+    $result =  $this->twig->render('pages/ajax/tricksajax.html.twig', [
         'tricks' => $tricks
     ]);
 

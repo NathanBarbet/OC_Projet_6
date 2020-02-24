@@ -99,6 +99,23 @@ commentsajax:
 comment.delete:
   path: /delete-comment/{trickname}-{trickid}-{id}
   controller: App\Controller\CommentsController::delete
+
+admin:
+  path: /admin
+  controller: App\Controller\UserController::admin
+
+valideuser:
+  path: /valideuser/{id}
+  controller: App\Controller\UserController::valideuser
+
+unvalideuser:
+  path: /unvalideuser/{id}
+  controller: App\Controller\UserController::unvalideuser
+
+viewvalideuser:
+  path: /viewvalideuser
+  controller: App\Controller\UserController::viewvalideuser
+
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
