@@ -31,7 +31,7 @@ class HomeController extends AbstractController
 
   public function tricksAjax(Request $request)
   {
-    $currentPage = $_POST['page'];
+    $currentPage = filter_input(INPUT_POST, 'page');
     $repository = $this->getDoctrine()->getRepository(Tricks::class);
     $tricks = $repository->findRecentTricks($currentPage);
 
