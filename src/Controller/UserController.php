@@ -140,7 +140,7 @@ class UserController extends AbstractController
 
       if(empty($user))
       {
-        echo "Erreur";
+        $this->addFlash('message', 'Erreur');
       }
       else {
         $user->setIsActive('1');
@@ -215,7 +215,7 @@ class UserController extends AbstractController
 
           if(empty($user))
           {
-            echo "Erreur";
+            $this->addFlash('message', 'Erreur');
           }
           else {
 
@@ -240,7 +240,7 @@ class UserController extends AbstractController
             );
             if(empty($user))
             {
-              echo "Erreur";
+              $this->addFlash('message', 'Erreur');
             }
             else {
             if($plainPassword == $plainPasswordRepeat)

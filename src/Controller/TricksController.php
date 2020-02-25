@@ -108,11 +108,11 @@ class TricksController extends AbstractController
               return $this->redirectToRoute('home');
             }
             else {
-              echo 'Ce tricks existe déjà !';
+              $this->addFlash('message', 'Ce tricks existe déjà !');
             }
         }
         else {
-           echo 'La description ne peux être vide.';
+          $this->addFlash('message', 'La description ne peux être vide.');
         }
       }
 
@@ -185,11 +185,11 @@ class TricksController extends AbstractController
               ));
             }
             else {
-              echo 'Ce tricks existe déjà !';
+              $this->addFlash('message', 'Ce tricks existe déjà !');
             }
         }
         else {
-          echo 'La description ne peux être vide.';
+          $this->addFlash('message', 'La description ne peux être vide.');
         }
       }
 
