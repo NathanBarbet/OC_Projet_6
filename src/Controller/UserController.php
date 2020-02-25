@@ -49,7 +49,7 @@ class UserController extends AbstractController
         $user = new Users();
         $error = $authentificationUtils->getLastAuthenticationError();
 
-        $emailUser = htmlspecialchars($_POST["email"]);
+        $emailUser = htmlspecialchars(filter_input(INPUT_POST, 'email'));
         $repository = $this->getDoctrine()->getRepository(Users::class);
         $emailUsed = $repository->findBy(
           ['email' => $emailUser]
@@ -61,14 +61,14 @@ class UserController extends AbstractController
             {
               $user->setEmail($emailUser);
 
-              $name = htmlspecialchars($_POST['name']);
+              $name = htmlspecialchars(filter_input(INPUT_POST, 'name'));
               $user->setName($name);
 
-              $firstname = htmlspecialchars($_POST['firstname']);
+              $firstname = htmlspecialchars(filter_input(INPUT_POST, 'firstname'));
               $user->setFirstname($firstname);
 
-              $plainPassword = htmlspecialchars($_POST['password']);
-              $plainPasswordRepeat = htmlspecialchars($_POST['repeatpassword']);
+              $plainPassword = htmlspecialchars(filter_input(INPUT_POST, 'password'));
+              $plainPasswordRepeat = htmlspecialchars(filter_input(INPUT_POST, 'repeatpassword'));
 
               if($plainPassword == $plainPasswordRepeat)
               {
@@ -166,7 +166,7 @@ class UserController extends AbstractController
     {
         $error = $authentificationUtils->getLastAuthenticationError();
 
-        $emailUser = htmlspecialchars($_POST["email"]);
+        $emailUser = htmlspecialchars(filter_input(INPUT_POST, 'email'));
         $repository = $this->getDoctrine()->getRepository(Users::class);
         $emailUsed = $repository->findOneBy(
           ['email' => $emailUser]
@@ -232,8 +232,8 @@ class UserController extends AbstractController
         {
 
             $repository = $this->getDoctrine()->getRepository(Users::class);
-            $plainPassword = htmlspecialchars($_POST['password']);
-            $plainPasswordRepeat = htmlspecialchars($_POST['repeatpassword']);
+            $plainPassword = htmlspecialchars(filter_input(INPUT_POST, 'password'));
+            $plainPasswordRepeat = htmlspecialchars(filter_input(INPUT_POST, 'repeatpassword'));
             $user = $repository->findOneBy(
               ['token' => $token,
                'email' => $email]
@@ -347,8 +347,8 @@ class UserController extends AbstractController
     public function editprofilpasswordvalide(Request $request, UserInterface $user, AuthenticationUtils $authentificationUtils): Response
     {
       $error = $authentificationUtils->getLastAuthenticationError();
-      $plainPassword = htmlspecialchars($_POST['password']);
-      $plainPasswordRepeat = htmlspecialchars($_POST['repeatpassword']);
+      $plainPassword = htmlspecialchars(filter_input(INPUT_POST, 'password'));
+      $plainPasswordRepeat = htmlspecialchars(filter_input(INPUT_POST, 'repeatpassword'));
 
       if($plainPassword == $plainPasswordRepeat)
         {

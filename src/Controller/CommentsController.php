@@ -48,8 +48,8 @@ class CommentsController extends AbstractController
 
   public function commentsAjax(Request $request)
   {
-    $currentPage = $_POST['page'];
-    $id = $_POST['id'];
+    $currentPage = filter_input(INPUT_POST, 'page');
+    $id = filter_input(INPUT_POST, 'id');
     $repository = $this->getDoctrine()->getRepository(Comments::class);
     $comments = $repository->findRecentComments($id, $currentPage);
 
@@ -79,7 +79,7 @@ class CommentsController extends AbstractController
         ['id' => $id]
       );
 
-      $content = htmlspecialchars($_POST['content']);
+      $content =  htmlspecialchars(filter_input(INPUT_POST,'content'));
 
       if (isset($content) && !empty($content))
       {
