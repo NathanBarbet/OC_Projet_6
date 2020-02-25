@@ -22,6 +22,7 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
+    //* Request last tricks
     public function findRecentTricks($page)
     {
       return $this->createQueryBuilder('t')
@@ -32,6 +33,7 @@ class TricksRepository extends ServiceEntityRepository
           ->getResult();
     }
 
+    //* Request a trick
     public function findSingleTrick($id)
     {
       return $this->createQueryBuilder('t')
@@ -40,6 +42,7 @@ class TricksRepository extends ServiceEntityRepository
           ->getResult();
     }
 
+    //* Verify if name of trick is already use
     public function verifyName($id, $name)
     {
       return $this->createQueryBuilder('t')

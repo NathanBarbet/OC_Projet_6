@@ -4,13 +4,13 @@
 
 {% block javascripts %}
   {{ parent() }}
-  
+
   <script src="{{ asset('vendor/loadmore/app.js')}}"></script>
 {% endblock %}
 
 {% block body %}
   <!-- Header -->
-  <header class="masthead col-lg-12 text-truncate">
+  <header id="nav" class="masthead col-lg-12 text-truncate">
     <div class="container col-lg-12 d-flex h-100 align-items-center">
       <div class="mx-auto col-lg-12 text-center">
         <h1 class="mx-auto my-0 text-uppercase col-lg-12 text-truncate">SnowTricks</h1>
@@ -37,4 +37,8 @@
   </div>
   <button id="btnLoadMore" class="btn btn-secondary mt-3 mb-3 ml-5" data-page="0">Voir plus</button>
   </section>
+  <a href="#nav" id="scrollToTop" class="btn btn-primary js-scroll-trigger">
+  <i class="fas fa-arrow-up"></i>
+  </a>
+
 {% endblock %}

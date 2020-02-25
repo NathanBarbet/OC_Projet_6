@@ -31,7 +31,7 @@ class MediasController extends AbstractController
     $this->em = $em;
   }
 
-
+  //* Add a image on trick
   public function addmediasimage(Tricks $trick,Request $request): Response
   {
       $title = 'Ajouter une image';
@@ -79,6 +79,7 @@ class MediasController extends AbstractController
       ]));
   }
 
+  //* Add a video on trick
   public function addmediasvideo(Tricks $trick,Request $request): Response
   {
       $title = 'Ajouter une vidéo';
@@ -112,7 +113,7 @@ class MediasController extends AbstractController
       ]));
   }
 
-
+  //* Delete a media on trick
   public function delete($trickid, $name, Medias $medias, Request $request, UserInterface $user): Response
   {
     $user = $this->getUser();

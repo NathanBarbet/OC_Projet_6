@@ -31,7 +31,7 @@ class UserController extends AbstractController
     $this->em = $em;
   }
 
-
+  //* Display register page
   public function adduser(AuthenticationUtils $authentificationUtils): Response
   {
       $error = $authentificationUtils->getLastAuthenticationError();
@@ -43,7 +43,7 @@ class UserController extends AbstractController
       ]));
     }
 
-
+    //* Valide register of user
     public function adduservalide(MailerInterface $mailer, AuthenticationUtils $authentificationUtils): Response
     {
         $user = new Users();
@@ -128,7 +128,7 @@ class UserController extends AbstractController
         ]));
       }
 
-
+  //* Valide email of user
   public function activeemail($token, $name): Response
   {
 
@@ -151,7 +151,7 @@ class UserController extends AbstractController
       }
     }
 
-
+    //* Display forgot password page
     public function resetpassword(AuthenticationUtils $authentificationUtils): Response
     {
         $error = $authentificationUtils->getLastAuthenticationError();
@@ -162,6 +162,7 @@ class UserController extends AbstractController
         ]));
     }
 
+    //* Valide a forgot password form
     public function resetpasswordvalide(MailerInterface $mailer, AuthenticationUtils $authentificationUtils): Response
     {
         $error = $authentificationUtils->getLastAuthenticationError();
@@ -203,6 +204,7 @@ class UserController extends AbstractController
         ]));
       }
 
+      //* Display page reset password with verification of token
       public function newpassword($token, $email, AuthenticationUtils $authentificationUtils): Response
       {
           $error = $authentificationUtils->getLastAuthenticationError();
@@ -228,6 +230,7 @@ class UserController extends AbstractController
           }
         }
 
+        //* Set new password after forgot password action if all is valid
         public function setnewpassword($token, $email, AuthenticationUtils $authentificationUtils): Response
         {
 
@@ -280,6 +283,7 @@ class UserController extends AbstractController
 
           }
 
+  //* Login function
   public function login(AuthenticationUtils $authentificationUtils): Response
   {
     $error = $authentificationUtils->getLastAuthenticationError();
@@ -292,6 +296,7 @@ class UserController extends AbstractController
       ]));
     }
 
+    //* Display profil page
     public function profil(): Response
     {
         return new Response($this->twig->render('pages/users/profil.html.twig', [
@@ -299,6 +304,7 @@ class UserController extends AbstractController
         ]));
     }
 
+    //* Page edit profil
     public function editprofil(Request $request, UserInterface $user): Response
     {
         $form = $this->createForm(EditProfilType::class, $user);
@@ -335,6 +341,7 @@ class UserController extends AbstractController
         ]));
     }
 
+    //* Display edit password page in profil user
     public function editprofilpassword(AuthenticationUtils $authentificationUtils): Response
     {
       $error = $authentificationUtils->getLastAuthenticationError();
@@ -344,6 +351,7 @@ class UserController extends AbstractController
         ]));
     }
 
+    //* Set new password
     public function editprofilpasswordvalide(Request $request, UserInterface $user, AuthenticationUtils $authentificationUtils): Response
     {
       $error = $authentificationUtils->getLastAuthenticationError();
@@ -386,6 +394,7 @@ class UserController extends AbstractController
 
     }
 
+    //* Admin page
     public function admin(UserInterface $user): Response
     {
       $user = $this->getUser();
@@ -406,6 +415,7 @@ class UserController extends AbstractController
       }
     }
 
+    //* Valide a user
     public function valideuser($id, UserInterface $user): Response
     {
       $user = $this->getUser();
@@ -434,6 +444,7 @@ class UserController extends AbstractController
       ]));
     }
 
+    //* Unvalide a user
     public function unvalideuser($id, UserInterface $user): Response
     {
       $user = $this->getUser();
@@ -462,6 +473,7 @@ class UserController extends AbstractController
       ]));
     }
 
+    //* View Valide user
     public function viewvalideuser(): Response
     {
       $user = $this->getUser();

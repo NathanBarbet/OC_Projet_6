@@ -19,6 +19,7 @@ class HomeController extends AbstractController
     $this->twig = $twig;
   }
 
+  //* Display home page
   public function index(Request $request): Response
   {
       $repository = $this->getDoctrine()->getRepository(Tricks::class);
@@ -29,6 +30,7 @@ class HomeController extends AbstractController
       ]));
   }
 
+  //* Function to display tricks with "Load more" button 
   public function tricksAjax(Request $request)
   {
     $currentPage = filter_input(INPUT_POST, 'page');

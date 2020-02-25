@@ -30,6 +30,7 @@ class TricksController extends AbstractController
     $this->em = $em;
   }
 
+  //* Display page single trick
   public function show($id): Response
   {
       $repository = $this->getDoctrine()->getRepository(Tricks::class);
@@ -44,6 +45,7 @@ class TricksController extends AbstractController
       ]));
   }
 
+  //* Add a trick
   public function addtrick(Request $request, UserInterface $user): Response
   {
       $title = 'Ajouter un trick';
@@ -123,6 +125,7 @@ class TricksController extends AbstractController
       ]));
   }
 
+  //* Edit a trick
   public function edit(Tricks $trick, Request $request, UserInterface $user): Response
   {
       $form = $this->createForm(EditTrickType::class, $trick);
@@ -203,6 +206,7 @@ class TricksController extends AbstractController
       ]));
   }
 
+  //* Delete a trick
   public function delete(Tricks $trick, UserInterface $user): Response
   {
       $user = $this->getUser();
