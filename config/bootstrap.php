@@ -8,7 +8,7 @@ require dirname(__DIR__).'/vendor/autoload.php';
 // Run "composer dump-env prod" to create it (requires symfony/flex >=1.2)
 if (is_array($env = @include dirname(__DIR__).'/.env.local.php') && (!isset($env['APP_ENV']) || (filter_input(INPUT_SERVER, 'APP_ENV') ?? filter_input(INPUT_ENV, 'APP_ENV') ?? $env['APP_ENV']) === $env['APP_ENV'])) {
     foreach ($env as $k => $v) {
-        $_ENV[$k] = filter_input(INPUT_ENV, $k) ?? (filter_input(INPUT_SERVER, $k) && 0 !== strpos($k, 'HTTP_') ? filter_input(INPUT_SERVER, $k) : $v);
+        $k = filter_input(INPUT_ENV, $k) ?? (filter_input(INPUT_SERVER, $k) && 0 !== strpos($k, 'HTTP_') ? filter_input(INPUT_SERVER, $k) : $v);
     }
 } elseif (!class_exists(Dotenv::class)) {
     throw new RuntimeException('Please run "composer require symfony/dotenv" to load the ".env" files configuring the application.');
