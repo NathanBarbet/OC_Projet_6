@@ -19,7 +19,7 @@ class UsersRepository extends ServiceEntityRepository
         parent::__construct($registry, Users::class);
     }
 
-
+    //* Request users
     public function findUsers()
     {
       return $this->createQueryBuilder('u')

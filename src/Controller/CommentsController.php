@@ -26,6 +26,7 @@ class CommentsController extends AbstractController
     $this->em = $em;
   }
 
+  //* Delete a comment
   public function delete($trickid, $trickname, Comments $comment, UserInterface $user): Response
   {
     $user = $this->getUser();
@@ -46,6 +47,7 @@ class CommentsController extends AbstractController
     }
   }
 
+  //* Function for display comments with "load more" button
   public function commentsAjax(Request $request)
   {
     $currentPage = filter_input(INPUT_POST, 'page');
@@ -70,6 +72,7 @@ class CommentsController extends AbstractController
     );
   }
 
+  //* Add a comment
   public function addcomment($name, $id, Request $request, UserInterface $user): Response
   {
       $comment = new Comments();
