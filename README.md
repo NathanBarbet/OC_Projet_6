@@ -2,6 +2,8 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/88e7a1cfb31a4f1bb018581cc076869b)](https://www.codacy.com/manual/NathanBarbet/OC_Projet_6?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=NathanBarbet/OC_Projet_6&amp;utm_campaign=Badge_Grade)
 
+Php version : 7.3.12
+
 Exemple : http://nathanbarbet.fr/P6
 
 for installation:
