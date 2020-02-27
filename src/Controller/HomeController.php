@@ -20,7 +20,7 @@ class HomeController extends AbstractController
   }
 
   //* Display home page
-  public function index(Request $request): Response
+  public function index(): Response
   {
       $repository = $this->getDoctrine()->getRepository(Tricks::class);
       $tricks = $repository->findRecentTricks(1);
@@ -30,8 +30,8 @@ class HomeController extends AbstractController
       ]));
   }
 
-  //* Function to display tricks with "Load more" button 
-  public function tricksAjax(Request $request)
+  //* Function to display tricks with "Load more" button
+  public function tricksAjax()
   {
     $currentPage = filter_input(INPUT_POST, 'page');
     $repository = $this->getDoctrine()->getRepository(Tricks::class);

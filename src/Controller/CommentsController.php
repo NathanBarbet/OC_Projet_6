@@ -48,7 +48,7 @@ class CommentsController extends AbstractController
   }
 
   //* Function for display comments with "load more" button
-  public function commentsAjax(Request $request)
+  public function commentsAjax()
   {
     $currentPage = filter_input(INPUT_POST, 'page');
     $id = filter_input(INPUT_POST, 'id');
@@ -73,7 +73,7 @@ class CommentsController extends AbstractController
   }
 
   //* Add a comment
-  public function addcomment($name, $id, Request $request, UserInterface $user): Response
+  public function addcomment($name, $id, UserInterface $user): Response
   {
       $comment = new Comments();
 

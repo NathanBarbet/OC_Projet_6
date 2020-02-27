@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints\File;
 
 class TrickType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder)
     {
         $builder
             ->add('name', null, [

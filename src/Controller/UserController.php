@@ -231,7 +231,7 @@ class UserController extends AbstractController
         }
 
         //* Set new password after forgot password action if all is valid
-        public function setnewpassword($token, $email, AuthenticationUtils $authentificationUtils): Response
+        public function setnewpassword($token, $email): Response
         {
 
             $repository = $this->getDoctrine()->getRepository(Users::class);
@@ -317,7 +317,6 @@ class UserController extends AbstractController
           if ($avatar) {
               $originalFilename = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
 
-              $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
               $newFilename = uniqid().'.'.$avatar->guessExtension();
               try {
                       $avatar->move(
@@ -352,7 +351,7 @@ class UserController extends AbstractController
     }
 
     //* Set new password
-    public function editprofilpasswordvalide(Request $request, UserInterface $user, AuthenticationUtils $authentificationUtils): Response
+    public function editprofilpasswordvalide(UserInterface $user, AuthenticationUtils $authentificationUtils): Response
     {
       $error = $authentificationUtils->getLastAuthenticationError();
       $plainPassword = htmlspecialchars(filter_input(INPUT_POST, 'password'));
@@ -468,9 +467,7 @@ class UserController extends AbstractController
         return $this->redirectToRoute('home');
       }
 
-      return new Response($this->twig->render('pages/admin/admin.html.twig', [
-        'users' => $users
-      ]));
+      return new Response($this->twig->render('pages/admin/admin.html.twig'));
     }
 
     //* View Valide user

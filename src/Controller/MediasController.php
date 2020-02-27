@@ -46,7 +46,6 @@ class MediasController extends AbstractController
         if ($imageMedias) {
             $originalFilename = pathinfo($imageMedias->getClientOriginalName(), PATHINFO_FILENAME);
 
-            $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
             $newFilename = uniqid().'.'.$imageMedias->guessExtension();
             try {
                     $imageMedias->move(
@@ -114,7 +113,7 @@ class MediasController extends AbstractController
   }
 
   //* Delete a media on trick
-  public function delete($trickid, $name, Medias $medias, Request $request, UserInterface $user): Response
+  public function delete($trickid, $name, Medias $medias, UserInterface $user): Response
   {
     $user = $this->getUser();
     $userActive = $user->getIsActive();
