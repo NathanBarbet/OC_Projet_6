@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\File;
 
 class EditProfilType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', null, [

@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints\File;
 
 class MediasImageType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('imageMedias', Filetype::class, [
